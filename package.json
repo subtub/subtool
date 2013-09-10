@@ -1,0 +1,22 @@
+{
+  "name": "subtool",
+  "version": "0.0.1",
+  "description": "internal subtub tool",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/subtub/subtool.git"
+  },
+  "bin": {
+    "subtool": "./bin/subtool"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "dependencies": {
+    "commander": "2.0.0",
+    "cli-color": "0.2.2"
+  },
+  "devDependencies": {
+    "mocha": "1.12.1"
+  }
+}
