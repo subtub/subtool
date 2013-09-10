@@ -6,16 +6,17 @@ var path = require('path');
 
 /**
  * Small helper function to load the license templates and
- * replace name and year value.
+ * replace author and date value.
  */
-function loadLicense(path, name, year, callback) {
+function loadLicense(path, author, date, callback) {
   fs.readFile(process.cwd()+'/templates/license/'+path, function read(err, data) {
     if (err) console.error(err);
 
-    year = year || (new Date()).getFullYear();
+    author = author || 'subtub';
+    date = date || (new Date()).getFullYear();
 
     var tmp = data.toString();
-    var replaced = tmp.replace('{{name}}', name).replace('{{year}}', year);
+    var replaced = tmp.replace('{{author}}', author).replace('{{date}}', date);
 
     if (callback && typeof(callback) === "function") {
       callback(replaced);
@@ -27,8 +28,8 @@ exports.loadLicense = loadLicense;
 /**
  * The Apache License
  */
-exports.apache = function(name, year, callback) {
-  loadLicense('apache.txt', name, year, function(data) {
+exports.apache = function(author, date, callback) {
+  loadLicense('apache.txt', author, date, function(data) {
     if (callback && typeof(callback) === "function") {
       callback(data);
     };
@@ -38,8 +39,8 @@ exports.apache = function(name, year, callback) {
 /**
  * The FreeBSD License
  */
-exports.freebsd = function(name, year, callback) {
-  loadLicense('freebsd.txt', name, year, function(data) {
+exports.freebsd = function(author, date, callback) {
+  loadLicense('freebsd.txt', author, date, function(data) {
     if (callback && typeof(callback) === "function") {
       callback(data);
     };
@@ -49,8 +50,8 @@ exports.freebsd = function(name, year, callback) {
 /**
  * The ISC License
  */
-exports.isc = function(name, year, callback) {
-  loadLicense('isc.txt', name, year, function(data) {
+exports.isc = function(author, date, callback) {
+  loadLicense('isc.txt', author, date, function(data) {
     if (callback && typeof(callback) === "function") {
       callback(data);
     };
@@ -60,8 +61,8 @@ exports.isc = function(name, year, callback) {
 /**
  * The MIT License
  */
-exports.mit = function(name, year, callback) {
-  loadLicense('mit.txt', name, year, function(data) {
+exports.mit = function(author, date, callback) {
+  loadLicense('mit.txt', author, date, function(data) {
     if (callback && typeof(callback) === "function") {
       callback(data);
     };
@@ -71,8 +72,8 @@ exports.mit = function(name, year, callback) {
 /**
  * The NewBSD License
  */
-exports.newbsd = function(name, year, callback) {
-  loadLicense('newbsd.txt', name, year, function(data) {
+exports.newbsd = function(author, date, callback) {
+  loadLicense('newbsd.txt', author, date, function(data) {
     if (callback && typeof(callback) === "function") {
       callback(data);
     };
