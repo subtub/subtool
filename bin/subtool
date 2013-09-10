@@ -1,0 +1,48 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+var program = require('commander');
+var pkg = require('./../package.json');
+var readme = require('./../src/readme');
+var license = require('./../src/license');
+
+/**
+ * The cli options.
+ */
+program
+  .version(pkg.version)
+  .option('-r, --readme', 'generate the readme file')
+  .option('-l, --license [type]', 'choose between the following license:\n                      apache, freebsd, isc, mit, newbsd');
+program.parse(process.argv);
+
+if (program.readme) {
+  readme.readme(function(data) {
+    console.log(data);
+  });
+};
+
+if (program.license) {
+  if (program.license === 'apache') {
+    license.apache('name', '1032', function(data) {
+      console.log(data);
+    });
+  } else if (program.license === 'freebsd') {
+    license.freebsd('name', '1032', function(data) {
+      console.log(data);
+    });
+  } else if (program.license === 'isc') {
+    license.isc('name', '1032', function(data) {
+      console.log(data);
+    });
+  } else if (program.license === 'mit') {
+    license.mit('name', '1032', function(data) {
+      console.log(data);
+    });
+  } else if (program.license === 'newbsd') {
+    license.newbsd('name', '1032', function(data) {
+      console.log(data);
+    });
+  }
+};
