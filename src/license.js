@@ -16,7 +16,10 @@ function loadLicense(path, name, year, callback) {
 
     var tmp = data.toString();
     var replaced = tmp.replace('{{name}}', name).replace('{{year}}', year);
-    callback(replaced)
+
+    if (callback && typeof(callback) === "function") {
+      callback(replaced);
+    };
   })
 }
 exports.loadLicense = loadLicense;
@@ -26,7 +29,9 @@ exports.loadLicense = loadLicense;
  */
 exports.apache = function(name, year, callback) {
   loadLicense('apache.txt', name, year, function(data) {
-    callback(data);
+    if (callback && typeof(callback) === "function") {
+      callback(data);
+    };
   })
 }
 
@@ -35,7 +40,9 @@ exports.apache = function(name, year, callback) {
  */
 exports.freebsd = function(name, year, callback) {
   loadLicense('freebsd.txt', name, year, function(data) {
-    callback(data);
+    if (callback && typeof(callback) === "function") {
+      callback(data);
+    };
   })
 }
 
@@ -44,7 +51,9 @@ exports.freebsd = function(name, year, callback) {
  */
 exports.isc = function(name, year, callback) {
   loadLicense('isc.txt', name, year, function(data) {
-    callback(data);
+    if (callback && typeof(callback) === "function") {
+      callback(data);
+    };
   })
 }
 
@@ -53,7 +62,9 @@ exports.isc = function(name, year, callback) {
  */
 exports.mit = function(name, year, callback) {
   loadLicense('mit.txt', name, year, function(data) {
-    callback(data);
+    if (callback && typeof(callback) === "function") {
+      callback(data);
+    };
   })
 }
 
@@ -62,6 +73,8 @@ exports.mit = function(name, year, callback) {
  */
 exports.newbsd = function(name, year, callback) {
   loadLicense('newbsd.txt', name, year, function(data) {
-    callback(data);
+    if (callback && typeof(callback) === "function") {
+      callback(data);
+    };
   })
 }
