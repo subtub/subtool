@@ -1,5 +1,15 @@
 ## Getting Started
 
+### Installation
+
+
+Install ```subtool``` with the Node Package Manager by running:
+
+    sudo npm install -g https://github.com/subtub/subtool/tarball/master
+
+
+### The .subfile
+
 If you want to generate ```README.md``` files with the subtool, it need an ```.subfile``` to configure the generator.
 
 A ```.subfile``` looks like:  
