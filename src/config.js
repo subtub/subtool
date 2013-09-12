@@ -14,11 +14,11 @@ var fs = require('fs');
 exports.load = function(path, callback) {
   fs.exists(path, function(exists) {
     if (exists) {
-    	var config = require(path);
-		  //console.log(config.readme);
-		  return callback(config);
+      var config = require(path);
+      //console.log(config.readme);
+      return callback(config);
     } else {
-    	// if no config file was found, return false.
+      // if no config file was found, return false.
       return callback(false);
     }
   });
@@ -27,8 +27,8 @@ exports.load = function(path, callback) {
 /**
  * Generate the config file.
  */
-exports.genetate = function() {
-	var tmp = 'TODO';
+exports.generate = function() {
+  var tmp = 'TODO';
   return tmp;
 }
 
@@ -39,6 +39,6 @@ exports.genetate = function() {
  * @returns True if the file is ok.
  */
 exports.lint = function(path) {
-	// TODO
+  // TODO
   return false;
 }
