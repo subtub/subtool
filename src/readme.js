@@ -10,6 +10,7 @@
 var shell = require('shelljs/global');
 var utils = require('./utils');
 var license = require('./license');
+var travis = require('./travis-ci');
 
 /**
  * The Readme headline.
@@ -54,9 +55,9 @@ function readme(config, callback) {
     utils.readPackageJson(process.env.PWD+'/package.json', function(data) {
       var tmp = headline(data.name, data.version)+'\n';
 
-      // travis?
+      // Travis-ci badge
       if (config.travis) {
-        tmp += '[![Build Status](https://travis-ci.org/'+config.github.username+'/'+config.github.project+'.png?branch=master)](https://travis-ci.org/'+config.github.username+'/'+config.github.project+')\n\n';
+        tmp += travis.badgeMarkdown(config.github.username, config.github.project)+'\n\n';
       };
 
       // Generate toc...
