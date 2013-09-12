@@ -1,0 +1,24 @@
+// subtool configuration file
+module.exports = { version: '0.0.1',
+
+  // Configure the README.md file.
+  readme: {
+    // The path to Markdown files we want to include.
+    content: '/docs',
+    // The files we want to include.
+    files: [
+      { title: 'General Information', file: '/general_information.md' }
+    ],
+    // Generate a Table of Content
+    toc: true,
+    travis_badge: true
+  },
+  
+  // Set the type of License we want to use. Choose between the following types:
+  // apache, frebsd, isc, mit, newbsd
+  license: 'mit',
+
+  // If true, generate a CONTRIBUTING.md file.
+  contributing: true
+
+}
