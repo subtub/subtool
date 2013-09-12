@@ -3,6 +3,13 @@
 module.exports = {
 
   //Settings for the README.md file.
+  // Set github username and project name.
+  github: {
+    username: 'subtub',
+    project: 'subtool'
+  },
+
+  // Settings for the README.md file.
   readme: {
     content: '/docs',
     toc: true,
@@ -18,4 +25,6 @@ module.exports = {
   // Generate a CONTRIBUTING.md file.
   contributing: true
 
+  
+  travis: true
 }

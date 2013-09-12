@@ -54,6 +54,11 @@ function readme(config, callback) {
     utils.readPackageJson(process.env.PWD+'/package.json', function(data) {
       var tmp = headline(data.name, data.version)+'\n';
 
+      // travis?
+      if (config.travis) {
+        tmp += '[![Build Status](https://travis-ci.org/'+config.github.username+'/'+config.github.project+'.png?branch=master)](https://travis-ci.org/'+config.github.username+'/'+config.github.project+')\n\n';
+      };
+
       // Generate toc...
       if (config.readme.toc === true) {
         tmp += toc(config);
