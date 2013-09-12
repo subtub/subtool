@@ -1,48 +1,137 @@
 #!/usr/bin/env node
 
 /**
+ * The subtool commandline interface.
+ */
+
+
+/**
  * Module dependencies.
  */
+var fs = require('fs');
 var program = require('commander');
 var pkg = require('./../package.json');
+var config = require('./../src/config');
 var readme = require('./../src/readme');
 var license = require('./../src/license');
 
 /**
- * The cli options.
+ * Some config stuff we need to run first.
+ */
+config.load(process.env.PWD+'/.subfile', function(data) {
+  if (data === false) {
+    console.log('No config file was found');
+  } else {
+    console.log(data);
+  }
+});
+
+/**
+ * Set the version of the cli and add some additional infos to help
  */
 program
   .version(pkg.version)
-  .option('-r, --readme', 'generate the readme file')
-  .option('-l, --license [type]', 'choose between the following license:\n                      apache, freebsd, isc, mit, newbsd');
+  .on('--help', function(){
+    console.log('  Infos:');
+    console.log();
+    console.log('    github.com/subtub/subtool');
+    console.log();
+  });
+
+/**
+ * The config command
+ */
+program
+  .command('config')
+  .description('subtool config commands')
+  .option('-l, -lint', 'lint the config file')
+  .action(function(options) {
+    console.log('todo ');
+    console.log(options);
+  })
+
+/**
+ * The readme command
+ */
+program
+  .command('readme')
+  .description('generate the readme file')
+  .option('-s, --save', 'save the file')
+  .action(function(options) {
+    readme.readme(function(data) {
+      if (options.save) {
+        fs.writeFile('README.md', data, function (err) {
+          if (err) throw err;
+          console.log('It\'s saved!');
+        });
+      } else {
+        console.log(data);
+      };
+    });
+  })
+  .on('--help', function() {
+    console.log('  Examples:');
+    console.log();
+    console.log('    $ subtool readme');
+    console.log();
+  });
+
+/**
+ * The license command
+ */
+program
+  .command('license <type>')
+  .description('choose between the following license: apache, freebsd, isc, mit, newbsd')
+  .option('-a, --author [name]', 'the author')
+  .option('-d, --date [year]', 'the year')
+  // TODO:
+  //.option('-s, --save', 'save the file')
+  .action(function(type, options) {
+    var author = options.author || 'subtub';
+    var date = options.date || (new Date()).getFullYear();
+    // parse the type
+    if (type === 'apache') {
+      license.apache(author, date, function(data) {
+        console.log(data);
+      });
+    } else if (type === 'freebsd') {
+      license.freebsd(author, date, function(data) {
+        console.log(data);
+      });
+    } else if (type === 'isc') {
+      license.isc(author, date, function(data) {
+        console.log(data);
+      });
+    } else if (type === 'mit') {
+      license.mit(author, date, function(data) {
+        console.log(data);
+      });
+    } else if (type === 'newbsd') {
+      license.newbsd(author, date, function(data) {
+        console.log(data);
+      });
+    } else {
+      console.log();
+      console.log('  error: not correct license type. use the following types:');
+      console.log('         apache, freebsd, isc, mit, newbsd');
+      console.log();
+    };
+  })
+  .on('--help', function() {
+    console.log('  Examples:');
+    console.log();
+    console.log('    $ subtool license mit -a paul');
+    console.log('    $ subtool license mit -a "karl koch" -y 2013');
+    console.log('    $ subtool license mit -a "karl koch" -y "2010 - 2013"');
+    console.log();
+  });
+
+/**
+ * Parse the process arguments
+ */
 program.parse(process.argv);
 
-if (program.readme) {
-  readme.readme(function(data) {
-    console.log(data);
-  });
-};
-
-if (program.license) {
-  if (program.license === 'apache') {
-    license.apache('name', '1032', function(data) {
-      console.log(data);
-    });
-  } else if (program.license === 'freebsd') {
-    license.freebsd('name', '1032', function(data) {
-      console.log(data);
-    });
-  } else if (program.license === 'isc') {
-    license.isc('name', '1032', function(data) {
-      console.log(data);
-    });
-  } else if (program.license === 'mit') {
-    license.mit('name', '1032', function(data) {
-      console.log(data);
-    });
-  } else if (program.license === 'newbsd') {
-    license.newbsd('name', '1032', function(data) {
-      console.log(data);
-    });
-  }
-};
+/**
+ * If no command exist, show help
+ */
+if (!program.args.length) program.help();
