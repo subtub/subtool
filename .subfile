@@ -2,7 +2,6 @@
 // version 0.0.1
 module.exports = {
 
-  //Settings for the README.md file.
   // Set github username and project name.
   github: {
     username: 'subtub',
@@ -23,8 +22,7 @@ module.exports = {
   license: 'mit',
 
   // Generate a CONTRIBUTING.md file.
-  contributing: true
-
+  contributing: true,
   
   travis: true
 }
