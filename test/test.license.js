@@ -1,7 +1,9 @@
 var assert = require('assert');
 var license = require('./../src/license');
 
+
 describe('src/license.js', function() {
+
   describe('#loadLicense()', function() {
     var mit = 'The MIT License (MIT)\n'+
               '\n'+
@@ -30,4 +32,5 @@ describe('src/license.js', function() {
       })
     })
   })
+
 })
