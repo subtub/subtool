@@ -16,17 +16,6 @@ var readme = require('./../src/readme');
 var license = require('./../src/license');
 
 /**
- * Some config stuff we need to run first.
- */
-config.load(process.env.PWD+'/.subfile', function(data) {
-  if (data === false) {
-    console.log('No config file was found');
-  } else {
-    console.log(data);
-  }
-});
-
-/**
  * Set the version of the cli and add some additional infos to help
  */
 program
@@ -58,15 +47,23 @@ program
   .description('generate the readme file')
   .option('-s, --save', 'save the file')
   .action(function(options) {
-    readme.readme(function(data) {
-      if (options.save) {
-        fs.writeFile('README.md', data, function (err) {
-          if (err) throw err;
-          console.log('It\'s saved!');
-        });
+    
+    // Some config stuff we need to run first.
+    config.load(process.env.PWD+'/.subfile', function(configData) {
+      if (configData === false) {
+        console.log('No config file was found. please create one.');
       } else {
-        console.log(data);
-      };
+        readme.readme(configData, function(data) {
+          if (options.save) {
+            fs.writeFile('README.md', data, function (err) {
+              if (err) throw err;
+              console.log('It\'s saved!');
+            });
+          } else {
+            console.log(data);
+          };
+        });
+      }
     });
   })
   .on('--help', function() {
