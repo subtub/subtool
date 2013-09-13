@@ -1,7 +1,14 @@
 /**
+ * Module dependencies.
+ */
+var md = require('./markdown');
+
+/**
  * Return Travis-ci Markdown badge as string.
  */
 exports.badgeMarkdown = function(githubUsername, githubProject, branch) {
 	branch = branch || 'master';
-	return '[![Build Status](https://travis-ci.org/'+githubUsername+'/'+githubProject+'.png?branch='+branch+')](https://travis-ci.org/'+githubUsername+'/'+githubProject+')\n\n';
+	var img = 'https://travis-ci.org/'+githubUsername+'/'+githubProject+'.png?branch='+branch;
+	var url = 'https://travis-ci.org/'+githubUsername+'/'+githubProject;
+	return md.link(url, md.image(img, 'Build Status'));
 }
