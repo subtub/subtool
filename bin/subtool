@@ -57,16 +57,16 @@ program
     // Some config stuff we need to run first.
     subfile.load(process.env.PWD+'/.subfile', function(configData) {
       if (configData === false) {
-        console.log('No .subfile file was found. please create one.');
+        log('No .subfile file was found. please create one.', logSilent);
       } else {
         readme.readme(configData, function(data) {
           if (options.save) {
             fs.writeFile('README.md', data, function (err) {
               if (err) throw err;
-              console.log('It\'s saved!');
+              log('It\'s saved!', logSilent);
             });
           } else {
-            console.log(data);
+            log(data, logSilent);
           };
         });
       }
@@ -115,10 +115,10 @@ program
         console.log(data);
       });
     } else {
-      console.log();
-      console.log('  error: not correct license type. use the following types:');
-      console.log('         apache, freebsd, isc, mit, newbsd');
-      console.log();
+      log('', logSilent);
+      log('  error: not correct license type. use the following types:', logSilent);
+      log('         apache, freebsd, isc, mit, newbsd', logSilent);
+      log('', logSilent);
     };
   })
   .on('--help', function() {
