@@ -18,7 +18,6 @@ function isTypeValid(license, callback) {
   for (var i=0; i<TYPES.length; i++) {
     if (license === TYPES[i]) {
       valid = true;
-      console.log('Treffer: '+valid);
     };
   };
   callback(valid);
