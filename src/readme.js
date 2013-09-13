@@ -72,7 +72,7 @@ function readme(config, callback) {
       };
 
       // Add license...
-      license.mit('subtub', '2013', function(data) {
+      license.get(config.license, 'subtub', '2013', function(data) {
         tmp += md.header2('License')+'\n\n'+data;
         tmp += utils.generatedInfoMarkdown();
         return callback(tmp);
