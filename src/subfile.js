@@ -9,6 +9,12 @@
 var fs = require('fs');
 
 /**
+ * The filename we use for our subfiles.
+ */
+var FILENAME = '.subfile';
+exports.FILENAME = FILENAME;
+
+/**
  * Load a config file.
  */
 exports.load = function(path, callback) {

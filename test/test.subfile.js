@@ -4,6 +4,12 @@ var subfile = require('./../src/subfile');
 
 describe('src/subfile.js', function() {
 
+  describe('#FILENAME', function() {
+    it('should return .subfile as string', function() {
+      assert.equal( '.subfile', subfile.FILENAME );
+    })
+  })
+
 	describe('#load()', function() {
     it('should return false if the .subfile filepath is not correct.', function() {
       subfile.load('not/correct', function(data) {
