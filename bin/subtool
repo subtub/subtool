@@ -49,9 +49,9 @@ program
   .action(function(options) {
     
     // Some config stuff we need to run first.
-    config.load(process.env.PWD+'/.subfile', function(configData) {
+    subfile.load(process.env.PWD+'/.subfile', function(configData) {
       if (configData === false) {
-        console.log('No config file was found. please create one.');
+        console.log('No .subfile file was found. please create one.');
       } else {
         readme.readme(configData, function(data) {
           if (options.save) {
