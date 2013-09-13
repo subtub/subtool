@@ -85,40 +85,25 @@ program
 program
   .command('license <type>')
   .description('choose between the following license: apache, freebsd, isc, mit, newbsd')
-  .option('-a, --author [name]', 'the author')
+  .option('-a, --author [name]', 'the author name we want to use')
   .option('-d, --date [year]', 'the year')
+  .option('-s, --save', 'save the license file')
   // TODO:
   //.option('-s, --save', 'save the file')
   .action(function(type, options) {
     // If options doesn't exists, set some default values.
     var author = options.author || 'subtub';
     var date = options.date || (new Date()).getFullYear();
-    // parse the type
-    if (type === 'apache') {
-      license.apache(author, date, function(data) {
+    
+    // check if we want to save a LICENSE.txt file.
+    // Else we print out the license.
+    if (options.save) {
+      license.save(type, author, date, logSilent);
+    }
+    else {
+      license.get(type, author, date, logSilent, function(data) {
         console.log(data);
       });
-    } else if (type === 'freebsd') {
-      license.freebsd(author, date, function(data) {
-        console.log(data);
-      });
-    } else if (type === 'isc') {
-      license.isc(author, date, function(data) {
-        console.log(data);
-      });
-    } else if (type === 'mit') {
-      license.mit(author, date, function(data) {
-        console.log(data);
-      });
-    } else if (type === 'newbsd') {
-      license.newbsd(author, date, function(data) {
-        console.log(data);
-      });
-    } else {
-      log('', logSilent);
-      log('  error: not correct license type. use the following types:', logSilent);
-      log('         apache, freebsd, isc, mit, newbsd', logSilent);
-      log('', logSilent);
     };
   })
   .on('--help', function() {
