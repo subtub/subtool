@@ -98,7 +98,9 @@ program
     // check if we want to save a LICENSE.txt file.
     // Else we print out the license.
     if (options.save) {
-      license.save(type, author, date, logSilent);
+      license.save(process.env.PWD, type, author, date, logSilent, function(data) {
+        log(license.FILENAME+' saved to current directory.', logSilent)
+      });
     }
     else {
       license.get(type, author, date, logSilent, function(data) {
