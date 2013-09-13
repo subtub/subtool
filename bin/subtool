@@ -47,7 +47,6 @@ program
   .description('generate the readme file')
   .option('-s, --save', 'save the file')
   .action(function(options) {
-    
     // Some config stuff we need to run first.
     subfile.load(process.env.PWD+'/.subfile', function(configData) {
       if (configData === false) {
@@ -84,6 +83,7 @@ program
   // TODO:
   //.option('-s, --save', 'save the file')
   .action(function(type, options) {
+    // If options doesn't exists, set some default values.
     var author = options.author || 'subtub';
     var date = options.date || (new Date()).getFullYear();
     // parse the type
@@ -117,7 +117,7 @@ program
   .on('--help', function() {
     console.log('  Examples:');
     console.log();
-    console.log('    $ subtool license mit -a paul');
+    console.log('    $ subtool license mit -a subtub');
     console.log('    $ subtool license mit -a "karl koch" -y 2013');
     console.log('    $ subtool license mit -a "karl koch" -y "2010 - 2013"');
     console.log();
