@@ -2,80 +2,72 @@
  * Module dependencies.
  */
 var fs = require('fs');
-var path = require('path');
+var log = require('./log');
+
+/**
+ * Array of the available licenses.
+ */
+var TYPES = ['apache', 'freebsd', 'isc', 'mit', 'newbsd'];
+exports.TYPES = TYPES;
+
+/**
+ * Check if the license variable is valid
+ */
+function isTypeValid(license, callback) {
+  var valid = false;
+  for (var i=0; i<TYPES.length; i++) {
+    if (license === TYPES[i]) {
+      valid = true;
+      console.log('Treffer: '+valid);
+    };
+  };
+  callback(valid);
+}
+exports.isTypeValid = isTypeValid;
 
 /**
  * Small helper function to load the license templates and
  * replace author and date value.
  */
-function loadLicense(path, author, date, callback) {
-  fs.readFile(process.cwd()+'/templates/license/'+path, function read(err, data) {
-    if (err) console.error(err);
+function get(license, author, date, logSilent, callback) {
+  logSilent = logSilent || false;
 
-    author = author || 'subtub';
-    date = date || (new Date()).getFullYear();
+  isTypeValid(license, function(data) {
+    if (data) {
+      fs.readFile(process.cwd()+'/templates/license/'+license+'.txt', function read(err, data) {
+        if (err) console.error(err);
 
-    var tmp = data.toString();
-    var replaced = tmp.replace('{{author}}', author).replace('{{date}}', date);
+        author = author || 'subtub';
+        date = date || (new Date()).getFullYear();
 
-    if (callback && typeof(callback) === "function") {
-      callback(replaced);
-    };
-  })
+        var tmp = data.toString();
+        var replaced = tmp.replace('{{author}}', author).replace('{{date}}', date);
+
+        if (callback && typeof(callback) === "function") {
+          callback(replaced);
+        };
+      })
+    } else {
+      log('', logSilent);
+      log('  error: not correct license type. use the following types:', logSilent);
+      log('         apache, freebsd, isc, mit, newbsd', logSilent);
+      log('', logSilent);
+      return false;
+    }
+  });
 }
-exports.loadLicense = loadLicense;
+exports.get = get;
 
 /**
- * The Apache License
+ * Save the license to textfile.
  */
-exports.apache = function(author, date, callback) {
-  loadLicense('apache.txt', author, date, function(data) {
-    if (callback && typeof(callback) === "function") {
-      callback(data);
-    };
-  })
-}
+exports.save = function(license, author, date, logSilent) {
+  logSilent = logSilent || false;
 
-/**
- * The FreeBSD License
- */
-exports.freebsd = function(author, date, callback) {
-  loadLicense('freebsd.txt', author, date, function(data) {
-    if (callback && typeof(callback) === "function") {
-      callback(data);
-    };
-  })
-}
-
-/**
- * The ISC License
- */
-exports.isc = function(author, date, callback) {
-  loadLicense('isc.txt', author, date, function(data) {
-    if (callback && typeof(callback) === "function") {
-      callback(data);
-    };
-  })
-}
-
-/**
- * The MIT License
- */
-exports.mit = function(author, date, callback) {
-  loadLicense('mit.txt', author, date, function(data) {
-    if (callback && typeof(callback) === "function") {
-      callback(data);
-    };
-  })
-}
-
-/**
- * The NewBSD License
- */
-exports.newbsd = function(author, date, callback) {
-  loadLicense('newbsd.txt', author, date, function(data) {
-    if (callback && typeof(callback) === "function") {
-      callback(data);
-    };
-  })
+  get(license, author, date, function(data) {
+    fs.writeFile('LICENSE.txt', data, function (err) {
+      if (err) throw err;
+      log('It\'s saved!', logSilent);
+    });
+  });
 }

@@ -3,11 +3,24 @@ var license = require('./../src/license');
 
 
 describe('src/license.js', function() {
+  
+  describe('#isTypeValid()', function() {
+    it('should return true if the license is correct.', function() {
+      license.isTypeValid('mit', function(data) {
+        assert.equal( true, data );
+      })
+    })
+    it('should return false if the license is correct.', function() {
+      license.isTypeValid('not correct', function(data) {
+        assert.equal( false, data );
+      })
+    })
+  })
 
   describe('#loadLicense()', function() {
     var mit = 'The MIT License (MIT)  \n'+
               '  \n'+
-              'Copyright (c) 2013 foo  \n'+
+              'Copyright (c) 2013 subtub  \n'+
               '  \n'+
               'Permission is hereby granted, free of charge, to any person obtaining a copy  \n'+
               'of this software and associated documentation files (the "Software"), to deal  \n'+
@@ -26,9 +39,16 @@ describe('src/license.js', function() {
               'LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  \n'+
               'OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN  \n'+
               'THE SOFTWARE.  \n  ';
+
     it('should return the mit license.', function() {
-      license.loadLicense('mit.txt', 'foo', '2013', function(data) {
+      license.get('mit', 'subtub', '2013', function(data) {
         assert.equal( mit, data );
+      })
+    })
+
+    it('should return false if the license type is not correct.', function() {
+      license.get('notCorrect', 'subtub', '2013', function(data) {
+        assert.equal( false, data );
       })
     })
   })
