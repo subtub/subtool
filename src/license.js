@@ -4,6 +4,9 @@
 var fs = require('fs');
 var log = require('./log');
 
+var FILENAME = 'LICENSE.txt';
+exports.FILENAME = FILENAME;
+
 /**
  * Array of the available licenses.
  */
@@ -29,8 +32,6 @@ exports.isTypeValid = isTypeValid;
  * replace author and date value.
  */
 function get(license, author, date, logSilent, callback) {
-  logSilent = logSilent || false;
-
   isTypeValid(license, function(data) {
     if (data) {
       fs.readFile(process.cwd()+'/templates/license/'+license+'.txt', function read(err, data) {
@@ -60,13 +61,14 @@ exports.get = get;
 /**
  * Save the license to textfile.
  */
-exports.save = function(license, author, date, logSilent) {
-  logSilent = logSilent || false;
-
-  get(license, author, date, function(data) {
-    fs.writeFile('LICENSE.txt', data, function (err) {
-      if (err) throw err;
-      log('It\'s saved!', logSilent);
+exports.save = function(path, license, author, date, logSilent, callback) {
+  get(license, author, date, logSilent, function(data) {
+    fs.writeFile(path+'/'+FILENAME, data, function (err) {
+      if (err) {
+        callback(err);
+      } else {
+        callback(true);
+      }
     });
   });
 }

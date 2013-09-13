@@ -17,7 +17,7 @@ describe('src/license.js', function() {
     })
   })
 
-  describe('#loadLicense()', function() {
+  describe('#get()', function() {
     var mit = 'The MIT License (MIT)  \n'+
               '  \n'+
               'Copyright (c) 2013 subtub  \n'+
@@ -41,14 +41,22 @@ describe('src/license.js', function() {
               'THE SOFTWARE.  \n  ';
 
     it('should return the mit license.', function() {
-      license.get('mit', 'subtub', '2013', function(data) {
+      license.get('mit', 'subtub', '2013', true, function(data) {
         assert.equal( mit, data );
       })
     })
 
     it('should return false if the license type is not correct.', function() {
-      license.get('notCorrect', 'subtub', '2013', function(data) {
+      license.get('notCorrect', 'subtub', '2013', true, function(data) {
         assert.equal( false, data );
+      })
+    })
+  })
+
+  describe('#save()', function() {
+    it('should return true if file saved correct.', function() {
+      license.save('test', 'mit', 'subtub', '2013', true, function(data) {
+        assert.equal( true, data );
       })
     })
   })
