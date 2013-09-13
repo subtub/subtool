@@ -18,7 +18,7 @@ describe('src/subfile.js', function() {
     })
     
     it('should return the .subfile file content as object.', function() {
-      subfile.load(process.env.PWD+'/.subfile', function(data) {
+      subfile.load(process.env.PWD, function(data) {
         assert( typeof data === 'object' );
       })
     })

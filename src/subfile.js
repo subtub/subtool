@@ -18,10 +18,11 @@ exports.FILENAME = FILENAME;
  * Load a config file.
  */
 exports.load = function(path, callback) {
-  fs.exists(path, function(exists) {
+  var tmpPath = path+'/'+FILENAME;
+
+  fs.exists(tmpPath, function(exists) {
     if (exists) {
-      var config = require(path);
-      //console.log(config.readme);
+      var config = require(tmpPath);
       return callback(config);
     } else {
       // if no config file was found, return false.
