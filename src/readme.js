@@ -8,18 +8,19 @@
  * Module dependencies.
  */
 var shell = require('shelljs/global');
-var utils = require('./utils');
 var license = require('./license');
+var md = require('./markdown');
 var travis = require('./travis-ci');
+var utils = require('./utils');
 
 /**
  * The Readme headline.
  */
 function headline(name, version) {
-  var tmp = '# ';
+  var tmp = '';
   if (name) tmp += name;
   if (version) tmp += ' v'+version;
-  return tmp+'  \n';
+  return md.header1(tmp)+'  \n';
 }
 exports.headline = headline;
 
@@ -27,10 +28,10 @@ exports.headline = headline;
  * Generate a Table of Content string. Formatted in Markdown.
  */
 function toc(config) {
-  var tmp = '## Table of Content\n\n';
+  var tmp = md.header2('Table of Content')+'\n\n';
 
-  for (var i=0; i<config.readme.order.length; i++) {
-    tmp += '['+config.readme.order[i].title+'](#'+config.readme.order[i].title+')  \n';
+  for (var i=0; i<config.readme.content.length; i++) {
+    tmp += md.link('#'+config.readme.content[i].title, config.readme.content[i].title)+'  \n';
   };
   tmp += '\n';
 
@@ -63,8 +64,8 @@ function readme(config, callback) {
       //   var str = cat(numOfFiles[i]);
       //   tmp += str;
       // };
-      for (var i=0; i<config.readme.order.length; i++) {
-        var tmpPath = process.env.PWD+config.readme.content+config.readme.order[i].file;
+      for (var i=0; i<config.readme.content.length; i++) {
+        var tmpPath = process.env.PWD+config.readme.content[i].file;
         //console.log('['+i+'] '+tmpPath);
         var str = cat(tmpPath);
         tmp += str;
@@ -72,9 +73,8 @@ function readme(config, callback) {
 
       // Add license...
       license.mit('subtub', '2013', function(data) {
-        tmp += '## License\n\n'+data;
-
-        tmp += generatedInfo();
+        tmp += md.header2('License')+'\n\n'+data;
+        tmp += utils.generatedInfoMarkdown();
         return callback(tmp);
       });
     });
