@@ -14,12 +14,19 @@ var pkg = require('./../package.json');
 var subfile = require('./../src/subfile');
 var readme = require('./../src/readme');
 var license = require('./../src/license');
+var log = require('./../src/log');
+
+/**
+ * Some variables we need
+ */
+var logSilent = false;
 
 /**
  * Set the version of the cli and add some additional infos to help
  */
 program
   .version(pkg.version)
+  .option('-S, --silent', 'silent mode')
   .on('--help', function(){
     console.log('  Infos:');
     console.log();
@@ -127,6 +134,13 @@ program
  * Parse the process arguments
  */
 program.parse(process.argv);
+
+/**
+ * Check some main options and set variables.
+ */
+if (program.silent) {
+  logSilent = true;
+};
 
 /**
  * If no command exist, show help
