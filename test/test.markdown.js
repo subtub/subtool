@@ -88,4 +88,12 @@ describe('src/markdown.js', function() {
     })
   })
 
+  describe('#linkList()', function() {
+    it('should return a list with links.', function() {
+      var arr = [{url: 'http://foo.baz', title: 'foo'},
+                 {url: 'http://bar.baz', title: 'bar'}];
+      assert.equal( '- [foo](http://foo.baz)\n- [bar](http://bar.baz)\n', markdown.linkList(arr) );
+    })
+  })
+
 })

@@ -47,7 +47,6 @@ exports.blockCode = function(code) {
   return '    '+code;
 }
 
-
 exports.rule = function() {
   return '---';
 }
@@ -64,6 +63,14 @@ exports.listOrdered = function(arr) {
   var tmp = '';
   for (var i=0; i<arr.length; i++) {
     tmp += (i+1)+'. '+arr[i]+'\n';
+  };
+  return tmp;
+}
+
+exports.linkList = function(arr) {
+  var tmp = '';
+  for (var i=0; i<arr.length; i++) {
+    tmp += '- ['+arr[i].title+']('+arr[i].url+')\n';
   };
   return tmp;
 }
