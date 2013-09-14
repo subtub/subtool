@@ -48,10 +48,10 @@ function get(license, author, date, logSilent, callback) {
         };
       })
     } else {
-      log('', logSilent);
-      log('  error: not correct license type. use the following types:', logSilent);
-      log('         apache, freebsd, isc, mit, newbsd', logSilent);
-      log('', logSilent);
+      log('', {silent:logSilent, color:'red'});
+      log('  error: not correct license type. use the following types:', {silent:logSilent, color:'red'});
+      log('         '+TYPES.toString(), {silent:logSilent, color:'red'});
+      log('', {silent:logSilent, color:'red'});
       return false;
     }
   });
