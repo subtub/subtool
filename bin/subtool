@@ -17,9 +17,9 @@ var license = require('./../src/license');
 var log = require('./../src/log');
 
 /**
- * Some variables we need
+ * Some variables we need globally.
  */
-var logSilent = false;
+var logConfig = {silent: false, color: 'green'};
 
 /**
  * Set the version of the cli and add some additional infos to help
@@ -63,7 +63,7 @@ program
           if (options.save) {
             fs.writeFile('README.md', data, function (err) {
               if (err) throw err;
-              log('It\'s saved!', logSilent);
+              log('It\'s saved!', logConfig);
             });
           } else {
             log(data, logSilent);
@@ -126,7 +126,7 @@ program.parse(process.argv);
  * Check some main options and set variables.
  */
 if (program.silent) {
-  logSilent = true;
+  logConfig.silent = true;
 };
 
 /**
