@@ -103,7 +103,7 @@ program
       });
     }
     else {
-      license.get(type, author, date, logSilent, function(data) {
+      license.get(type, author, date, logConfig, function(data) {
         console.log(data);
       });
     };
