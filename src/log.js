@@ -1,4 +1,15 @@
 /**
+ * Logging messages to console.
+ *
+ * TODO:
+ * - Change to Object to reduce parameter at log() function
+ * - Add log.info(), log.warn(), log.error()
+ * - Add log to file
+ * - Move to own Module
+ */
+
+
+/**
  * Module dependencies.
  */
 var clc = require('cli-color');
