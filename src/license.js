@@ -3,6 +3,7 @@
  */
 var fs = require('fs');
 var log = require('./log');
+var subtool = require('./subtool');
 
 var FILENAME = 'LICENSE.txt';
 exports.FILENAME = FILENAME;
@@ -34,7 +35,7 @@ exports.isTypeValid = isTypeValid;
 function get(license, author, date, logSilent, callback) {
   isTypeValid(license, function(data) {
     if (data) {
-      fs.readFile(process.cwd()+'/templates/license/'+license+'.txt', function read(err, data) {
+      fs.readFile(subtool.PATH+'/templates/license/'+license+'.txt', function read(err, data) {
         if (err) console.error(err);
 
         author = author || 'subtub';
