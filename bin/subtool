@@ -133,11 +133,11 @@ program
     if (type === 'p5') {
       if (options.list) {
         var list = fs.readdirSync(process.env.PWD+'/templates/processing')
-        console.log('choose between the following templates:\n');
+        log('choose between the following templates:\n', logConfig);
         for (var i=0; i<list.length; i++) {
-          console.log('  '+list[i]);
+          log('  '+list[i], logConfig);
         };
-        console.log();
+        log('', logConfig);
       };
       if (options.template) {
         var tmp = cat(process.env.PWD+'/templates/processing/'+options.template+'.pde')
