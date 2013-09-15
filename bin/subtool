@@ -11,6 +11,7 @@
 var fs = require('fs');
 var clc = require('cli-color');
 var program = require('commander');
+var shell = require('shelljs/global');
 var pkg = require('./../package.json');
 var license = require('./../src/license');
 var log = require('./../src/log');
@@ -39,15 +40,26 @@ program
   });
 
 /**
- * The config command
+ * The init command
  */
 program
-  .command('config')
-  .description('subtool config commands')
-  .option('-l, -lint', 'lint the config file')
+  .command('init')
+  .description(descColor('save a .subfile to the current directory'))
+  .option('-t, --travis', 'add a .travis.yml file')
   .action(function(options) {
-    console.log('todo ');
-    console.log(options);
+    
+    cat('/usr/local/lib/node_modules/subtool/templates/.subfile').to(process.env.PWD+'/.subfile');
+    mkdir(process.env.PWD+'/docs');
+    
+    if (options.travis) {
+      var tmp = 'language: node_js\nnode_js:\n  - 0.8\n  - 0.10';
+      tmp.to('.travis.yml');
+    };
+
+    log('A `.subfile` has been placed in this directory. You are now', logConfig);
+    log('ready to start writing your README.md file content. Please read', logConfig);
+    log('the comments in the `.subfile` as well as documentation on', logConfig);
+    log('the project page for more information on using subtool.', logConfig);
   })
 
 /**
