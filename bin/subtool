@@ -122,6 +122,37 @@ program
   });
 
 /**
+ * The templates command
+ */
+program
+  .command('tpl [type]')
+  .description(descColor('choose between the following template types: p5, node'))
+  .option('-t, --template [name]', 'the template we want to use')
+  .option('-l, --list', 'list the available templates')
+  .action(function(type, options) {
+    if (type === 'p5') {
+      if (options.list) {
+        var list = fs.readdirSync(process.env.PWD+'/templates/processing')
+        console.log('choose between the following templates:\n');
+        for (var i=0; i<list.length; i++) {
+          console.log('  '+list[i]);
+        };
+        console.log();
+      };
+      if (options.template) {
+        var tmp = cat(process.env.PWD+'/templates/processing/'+options.template+'.pde')
+        console.log(tmp);
+      };
+    };
+  })
+  .on('--help', function() {
+    console.log('  Examples:');
+    console.log();
+    console.log(infoColor('    $ subtool template p5 -t class'));
+    console.log();
+  });
+
+/**
  * Parse the process arguments
  */
 program.parse(process.argv);
