@@ -55,23 +55,24 @@ program
  */
 program
   .command('readme')
-  .description('generate the readme file')
-  .option('-s, --save', 'save the file')
+  .description(descColor('generate the readme file'))
+  .option('-n, --no-save', 'do not saving the file. just log to console')
   .action(function(options) {
-    // Some config stuff we need to run first.
-    subfile.load(process.env.PWD+'/.subfile', function(configData) {
+    // Load the .subfile at first.
+    subfile.load(process.env.PWD, function(configData) {
       if (configData === false) {
         log('No .subfile file was found. please create one.', logConfig);
         process.exit(1);
       } else {
-        readme.readme(configData, function(data) {
-          if (options.save) {
+        readme.generate(configData, function(data) {
+          if (options.noSave) {
+            log(data, logConfig);
+          } else {
             fs.writeFile('README.md', data, function (err) {
               if (err) throw err;
               log('It\'s saved!', logConfig);
             });
-          } else {
-            log(data, logSilent);
+            travis.saveYml(process.env.PWD, configData.travis, function(data) {});
           };
         });
       }
