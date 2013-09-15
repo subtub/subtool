@@ -61,7 +61,8 @@ program
     // Some config stuff we need to run first.
     subfile.load(process.env.PWD+'/.subfile', function(configData) {
       if (configData === false) {
-        log('No .subfile file was found. please create one.', logSilent);
+        log('No .subfile file was found. please create one.', logConfig);
+        process.exit(1);
       } else {
         readme.readme(configData, function(data) {
           if (options.save) {
