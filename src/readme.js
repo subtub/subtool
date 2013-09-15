@@ -42,7 +42,7 @@ exports.toc = toc;
 /**
  * Generate the README file. Formatted in Markdown.
  */
-function readme(config, callback) {
+function generate(config, callback) {
   if (callback && typeof(callback) === "function") {
     utils.readPackageJson(process.env.PWD+'/package.json', function(data) {
       var tmp = headline(data.name, data.version)+'\n';
@@ -72,7 +72,7 @@ function readme(config, callback) {
       };
 
       // Add license...
-      license.get(config.license, 'subtub', '2013', function(data) {
+      license.get(config.license, 'subtub', '2013', false, function(data) {
         tmp += md.header2('License')+'\n\n'+data;
         tmp += utils.generatedInfoMarkdown();
         return callback(tmp);
@@ -80,4 +80,4 @@ function readme(config, callback) {
     });
   }
 }
-exports.readme = readme;
+exports.generate = generate;
