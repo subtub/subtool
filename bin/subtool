@@ -17,7 +17,13 @@ var license = require('./../src/license');
 var log = require('./../src/log');
 var readme = require('./../src/readme');
 var subfile = require('./../src/subfile');
+var subtool = require('./../src/subtool');
 var travis = require('./../src/travis-ci');
+
+/**
+ * The current working directory of the terminal.
+ */
+var CWD = process.cwd();
 
 /**
  * Some variables we need globally.
@@ -48,8 +54,10 @@ program
   .option('-t, --travis', 'add a .travis.yml file')
   .action(function(options) {
     
-    cat('/usr/local/lib/node_modules/subtool/templates/.subfile').to(process.env.PWD+'/.subfile');
-    mkdir(process.env.PWD+'/docs');
+    //cat(subtool.PATH+'/templates/.subfile').to(CWD+'/.subfile');
+    cp(subtool.PATH+'/templates/.subfile', CWD+'/.subfile');
+    mkdir(CWD+'/docs');
+    cp(subtool.PATH+'/templates/general_information.md', CWD+'/docs/general_information.md');
     
     if (options.travis) {
       var tmp = 'language: node_js\nnode_js:\n  - 0.8\n  - 0.10';
@@ -71,7 +79,7 @@ program
   .option('-n, --no-save', 'do not saving the file. just log to console')
   .action(function(options) {
     // Load the .subfile at first.
-    subfile.load(process.env.PWD, function(configData) {
+    subfile.load(CWD, function(configData) {
       if (configData === false) {
         log('No .subfile file was found. please create one.', logConfig);
         process.exit(1);
@@ -84,7 +92,7 @@ program
               if (err) throw err;
               log('It\'s saved!', logConfig);
             });
-            travis.saveYml(process.env.PWD, configData.travis, function(data) {});
+            //travis.saveYml(process.env.PWD, configData.travis, function(data) {});
           };
         });
       }
@@ -116,7 +124,7 @@ program
     // check if we want to save a LICENSE.txt file.
     // Else we print out the license.
     if (options.save) {
-      license.save(process.env.PWD, type, author, date, logSilent, function(data) {
+      license.save(CWD, type, author, date, logSilent, function(data) {
         log(license.FILENAME+' saved to current directory.', logSilent)
       });
     }
@@ -146,7 +154,7 @@ program
   .action(function(type, options) {
     if (type === 'p5') {
       if (options.list) {
-        var list = fs.readdirSync(process.env.PWD+'/templates/processing')
+        var list = fs.readdirSync(subtool.PATH+'/templates/processing')
         log('choose between the following templates:\n', logConfig);
         for (var i=0; i<list.length; i++) {
           log('  '+list[i], logConfig);
@@ -154,7 +162,7 @@ program
         log('', logConfig);
       };
       if (options.template) {
-        var tmp = cat(process.env.PWD+'/templates/processing/'+options.template+'.pde')
+        var tmp = cat(subtool.PATH+'/templates/processing/'+options.template+'.pde')
         console.log(tmp);
       };
     };
