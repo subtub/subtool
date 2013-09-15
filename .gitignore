@@ -2,3 +2,6 @@
 
 # Node.js Files
 /node_modules
+
+# Test Files
+/testing
