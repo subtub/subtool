@@ -17,6 +17,10 @@ describe('bin/subtool', function() {
   testExec('license mit -a subtub');
   testExec('license mit -d "2012 - 2013"');
 
+  testExec('readme -h');
+  testExec('readme');
+  testExec('readme -n');
+
   testExec('tpl -h');
   testExec('tpl p5 -l');
   testExec('tpl p5 -t sketch');
