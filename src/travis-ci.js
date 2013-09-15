@@ -17,6 +17,17 @@ exports.badgeMarkdown = function(githubUsername, githubProject, branch) {
 }
 
 /**
+ * Generate the content for a travis file.
+ */
+exports.generateYml = function(config) {
+  var tmp = 'language: node_js\n';
+  tmp += 'node_js:\n';
+  tmp += '  - 0.8\n';
+  tmp += '  - 0.10';
+  return tmp;
+}
+
+/**
  * Create .travis.yml file
  *
  * @param config - like {language: 'node_js', version: '0.8'}

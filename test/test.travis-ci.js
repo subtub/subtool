@@ -5,6 +5,13 @@ var travis = require('./../src/travis-ci');
 describe('src/travis-ci.js', function() {
   
   var config = {language: 'node_js', version: ['0.8', '0.10']};
+  
+  describe('#saveYml() with callback', function() {
+    it('should return true, if the file was saved', function() {
+      var config = {language: 'node_js', version: ['0.8', '0.10']}
+      assert.equal( 'language: node_js\nnode_js:\n  - 0.8\n  - 0.10', travis.generateYml(config) );
+    })
+  })
 
   describe('#saveYml() with callback', function() {
     it('should return true, if the file was saved', function() {
