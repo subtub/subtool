@@ -11,10 +11,11 @@
 var fs = require('fs');
 var program = require('commander');
 var pkg = require('./../package.json');
-var subfile = require('./../src/subfile');
-var readme = require('./../src/readme');
 var license = require('./../src/license');
 var log = require('./../src/log');
+var readme = require('./../src/readme');
+var subfile = require('./../src/subfile');
+var travis = require('./../src/travis-ci');
 
 /**
  * Some variables we need globally.
