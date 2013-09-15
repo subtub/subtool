@@ -2,41 +2,29 @@ var assert = require('assert');
 var shell = require('shelljs/global');
 
 
-describe('subtool', function() {
-  it('show the help', function() {
-    var tmpCode = exec('node bin/subtool').code;
-    assert.equal( 0, tmpCode);
-  })
+describe('bin/subtool', function() {
+  testExec('');
+  
+  testExec('-h');
+  testExec('-V');
+
+  testExec('license -h');
+  testExec('license apache');
+  testExec('license freebsd');
+  testExec('license isc');
+  testExec('license mit');
+  testExec('license newbsd');
+  testExec('license mit -a subtub');
+  testExec('license mit -d "2012 - 2013"');
 })
 
-describe('subtool -h', function() {
-  it('show the help', function() {
-    var tmpCode = exec('node bin/subtool -h').code;
+/**
+ * Small execution test helper.
+ * Check if the exec code equals 0.
+ */
+function testExec(cmd) {
+  it('execute bin/subtool '+cmd, function() {
+    var tmpCode = exec('node bin/subtool '+cmd, {silent:true}).code;
     assert.equal( 0, tmpCode);
   })
-})
-
-describe('subtool license', function() {
-  describe('subtool license [type]', function() {
-    it('log apache license to console', function() {
-      var tmpCode = exec('node bin/subtool license apache').code;
-      assert.equal( 0, tmpCode);
-    })
-    it('log freebsd license to console', function() {
-      var tmpCode = exec('node bin/subtool license freebsd').code;
-      assert.equal( 0, tmpCode);
-    })
-    it('log isc license to console', function() {
-      var tmpCode = exec('node bin/subtool license isc').code;
-      assert.equal( 0, tmpCode);
-    })
-    it('log mit license to console', function() {
-      var tmpCode = exec('node bin/subtool license mit').code;
-      assert.equal( 0, tmpCode);
-    })
-    it('log newbsd license to console', function() {
-      var tmpCode = exec('node bin/subtool license newbsd').code;
-      assert.equal( 0, tmpCode);
-    })
-  })
-})
+}
