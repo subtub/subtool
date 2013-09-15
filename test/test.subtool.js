@@ -4,7 +4,7 @@ var shell = require('shelljs/global');
 
 describe('bin/subtool', function() {
   testExec('');
-  
+
   testExec('-h');
   testExec('-V');
 
@@ -16,6 +16,10 @@ describe('bin/subtool', function() {
   testExec('license newbsd');
   testExec('license mit -a subtub');
   testExec('license mit -d "2012 - 2013"');
+
+  testExec('tpl -h');
+  testExec('tpl p5 -l');
+  testExec('tpl p5 -t sketch');
 })
 
 /**
