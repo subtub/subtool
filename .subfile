@@ -1,8 +1,7 @@
 // subtool configuration file
-// version 0.0.1
-module.exports = {
+module.exports = { version: '0.0.1',
 
-  // Set github username and project name.
+  // Set GitHub User- and Project-Name.
   github: {
     username: 'subtub',
     project: 'subtool'
@@ -10,19 +9,24 @@ module.exports = {
 
   // Settings for the README.md file.
   readme: {
-    content: '/docs',
+    // Generate a Table of Content Markdown list.
     toc: true,
-    order: [
-      {title: 'General Information', file: '/general_information.md'},
-      {title: 'Getting Started', file: '/getting_started.md'}
+    content: [
+      { title: 'General Information',  file: '/docs/general_information.md' },
+      { title: 'Getting Started',      file: '/docs/getting_started.md' }
     ]
   },
   
-  // License settings.
+  // Set the type of License we want to use. Choose between the following types:
+  // apache, freebsd, isc, mit, newbsd
   license: 'mit',
 
-  // Generate a CONTRIBUTING.md file.
+  // If true, generate a CONTRIBUTING.md file.
   contributing: true,
   
-  travis: true
+  // If true, 
+  travis: {
+    language: 'node_js',
+    version: ['0.4', '0.6', '0.8', '0.10']
+  }
 }
