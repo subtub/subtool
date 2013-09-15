@@ -24,7 +24,10 @@ exports.badgeMarkdown = function(githubUsername, githubProject, branch) {
 exports.saveYml = function(path, config, callback) {
   var tmp = 'language: '+config.language+'\n';
   tmp += config.language+':\n';
-  tmp += '- '+config.version;
+
+  for (var i=0; i<config.version.length; i++) {
+    tmp += '  - '+config.version[i]+'\n';
+  };
 
   fs.writeFile(path+'/'+FILENAME, tmp, function (err) {
     if(err) {
