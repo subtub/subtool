@@ -55,7 +55,7 @@ describe('src/license.js', function() {
 
   describe('#save()', function() {
     it('should return true if file saved correct.', function() {
-      license.save('test', 'mit', 'subtub', '2013', false, function(data) {
+      license.save('testing', 'mit', 'subtub', '2013', false, function(data) {
         assert.equal( true, data );
       })
     })
