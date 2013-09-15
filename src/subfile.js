@@ -15,6 +15,11 @@ var FILENAME = '.subfile';
 exports.FILENAME = FILENAME;
 
 /**
+ * The valid version
+ */
+var VERSION = '0.0.1';
+
+/**
  * Load a config file.
  */
 exports.load = function(path, callback) {
@@ -23,20 +28,19 @@ exports.load = function(path, callback) {
   fs.exists(tmpPath, function(exists) {
     if (exists) {
       var config = require(tmpPath);
-      return callback(config);
+
+      // check version of the .subfile
+      if (config.version === VERSION) {
+        return callback(config);
+      } else {
+        console.log('Not valid version.');
+        return callback(false);
+      }
     } else {
       // if no config file was found, return false.
       return callback(false);
     }
   });
-}
-
-/**
- * Generate the config file.
- */
-exports.generate = function() {
-  var tmp = 'TODO';
-  return tmp;
 }
 
 /**
