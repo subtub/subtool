@@ -150,28 +150,50 @@ program
 program
   .command('tpl [type]')
   .description(descColor('choose between the following template types: p5, node'))
-  .option('-t, --template [name]', 'the template we want to use')
-  .option('-l, --list', 'list the available templates')
+  .option('-a, --all', 'list all template types')
+  .option('-s, --sample [name]', 'the template sample we want to use')
+  .option('-l, --list', 'list the available templates of a type')
   .action(function(type, options) {
-    if (type === 'p5') {
-      if (options.list) {
-        var list = fs.readdirSync(path.dirname(__dirname)+'/templates/processing')
-        log('choose between the following templates:\n', logConfig);
-        for (var i=0; i<list.length; i++) {
-          log('  '+list[i], logConfig);
-        };
+    var indexJson = require(path.dirname(__dirname)+'/templates/index.json');
+    
+    // List all available template types
+    if (options.all) {
+      log('list of available types:', logConfig);
+      log('', logConfig);
+      for (var i = 0; i < indexJson.content.length; i++) {
+        log('  - '+indexJson.content[i].command, logConfig);
+        log('    '+indexJson.content[i].description, logConfig);
         log('', logConfig);
       };
-      if (options.template) {
-        var tmp = cat(path.dirname(__dirname)+'/templates/processing/'+options.template+'.pde')
-        console.log(tmp);
+    }
+
+    if (type !== undefined) {
+      for (var i=0; i<indexJson.content.length; i++) {
+        // check if the type is a command from the index.json
+        if (type === indexJson.content[i].command) {
+          // Check the options
+          if (options.list) {
+            var list = fs.readdirSync(path.dirname(__dirname)+'/templates'+indexJson.content[i].folder)
+            log('choose between the following templates:\n', logConfig);
+            for (var i=0; i<list.length; i++) {
+              log('  '+list[i], logConfig);
+            };
+            log('', logConfig);
+          }
+          if (options.sample) {
+            var tmpPath = path.dirname(__dirname)+'/templates'+indexJson.content[i].folder+'/'+options.sample;
+            console.log(tmpPath);
+            var tmp = cat(tmpPath);
+            console.log(tmp);
+          };
+        };
       };
     };
   })
   .on('--help', function() {
     console.log('  Examples:');
     console.log();
-    console.log(infoColor('    $ subtool template p5 -t class'));
+    console.log(infoColor('    $ subtool template p5 -a class'));
     console.log();
   });
 

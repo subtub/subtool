@@ -1,0 +1,6 @@
+var A = function ( x ) {
+  var a = x;
+  this.print = function () {
+    console.log(a);
+  };
+};

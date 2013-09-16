@@ -1,0 +1,9 @@
+{
+  "content": [
+    {"command": "p5",
+     "folder": "/processing",
+     "description": "Processing sketch, class and other templates"},
+    {"command": "node",
+     "folder": "/node",
+     "description": "Node.js snippets"}]
+}
