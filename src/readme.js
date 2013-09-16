@@ -73,7 +73,10 @@ function generate(config, callback) {
 
       // Add license...
       license.get(config.license, 'subtub', '2013', false, function(data) {
-        tmp += md.header2('License')+'\n\n'+data;
+        tmp += md.header2('License')+'\n\n';
+        tmp += '```\n';
+        tmp += data;
+        tmp += '```\n';
         tmp += utils.generatedInfoMarkdown();
         return callback(tmp);
       });
