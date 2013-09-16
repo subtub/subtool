@@ -1,11 +1,11 @@
 module.exports = function(doc) {
-  console.log('\n-doc-object-input--------------------------');
-  console.log(doc);
-  console.log('-------------------------------------------\n');
-
-
-  doc.print(['some information about the subtool:',
-             'update', 'init', 'cheats', 'template', 'build']);
+  
+  doc.print(['some information about the subtool:\n',
+             'update',
+             'init',
+             'cheats',
+             'template',
+             'build']);
   
 
   doc.funct({
@@ -26,21 +26,9 @@ module.exports = function(doc) {
 
 
   doc.build({
-    language: 'node_js',
-    version: '0.10',
-    task: {src: '../test/'}
-  })
-
- //  data.config: {
- //    // Different types of Content:
- //    // Readme, Code, License, 
- //    content: 'code'
- //  },
-
-  // data.header({
-  //   author: 'subtub',
-  //   date: '2013';
-  //   license: 'mit'})
+    src: '../test/files/.sub.file',
+    out: '/TestSubbuild'
+  });
   
   return doc;
 }

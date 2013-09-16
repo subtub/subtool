@@ -4,19 +4,25 @@
  * Buildscript for sourcecode generator.
  */
 
-var script = require('./../templates/subbuild.js');
 
+/**
+ * Module dependencies.
+ */
+var fs = require('fs');
 
-
+/**
+ *
+ */
 var Subbuild = {
-	// speicher
+	// Storage
 	tmp: {node_js: '', processing: ''},
 
-  language: 'node',
-
+  /**
+   * write text to file.
+   * 
+   */
   print: function(msg) {
   	//console.log(msg);
-
   	this.tmp.node_js += '/**\n';
   	for (var i=0; i<msg.length; i++) {
   		this.tmp.node_js += ' * '+msg[i]+'\n';
@@ -50,33 +56,40 @@ var Subbuild = {
   	this.tmp.processing += '\n}\n';
   },
 
+  /**
+   * The compiler.
+   * We can comile to different languages like java, processing, node, javascript and also static files like Markdown docs or use different languages 
+   */
   build: function(config) {
+  	//console.log(config);
+
   	if (config.src !== undefined) {
   		
   		if (config.out !== undefined) {
   			console.log();
-  			console.log('start compiler...');
-  			console.log();
+  			console.log('  start compiler...');
+  			console.log('  source: '+config.src);
+  			console.log('  output: '+config.out);
 
-  			fs.fs.writeFileSync(config.out, this.tmp.node_js, 'utf-8');
-  			console.log();
-  			console.log('compiling finished');
-  			console.log();
+  			fs.writeFile(process.env.PWD+config.out+'.js', this.tmp.node_js, function(err) {
+			    if(err) {
+			        console.log(err);
+			    } else {
+			        console.log("  Node.JS saved");
+			    };
+			  });
+			  fs.writeFile(process.env.PWD+config.out+'.pde', this.tmp.processing, function(err) {
+			    if(err) {
+			        console.log(err);
+			    } else {
+			        console.log("  Processing saved");
+			    };
+			  });
+
   		};
   	};
-  	console.log(config);
   }
 
 };
 
-// Subbuild.prototype.log = function(message) {
-//   console.log(message);
-// }
-
-
-
-script(Subbuild);
-
-console.log('\n-doc-object-output-------------------------');
-console.log(Subbuild.tmp);
-console.log('-------------------------------------------\n');
+module.exports = Subbuild;
