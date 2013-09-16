@@ -72,6 +72,23 @@ program
   })
 
 /**
+ * The build command
+ */
+program
+  .command('build')
+  .description(descColor('generate the readme file'))
+  .option('-n, --no-save', 'do not saving the file. just log to console')
+  .action(function(options) {
+    var data = require(process.env.PWD+'/subbuild.js');
+  })
+  .on('--help', function() {
+    console.log('  Examples:');
+    console.log();
+    console.log(infoColor('    $ subtool build'));
+    console.log();
+  });
+
+/**
  * The readme command
  */
 program
