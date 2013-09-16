@@ -79,7 +79,13 @@ program
   .description(descColor('generate the readme file'))
   .option('-n, --no-save', 'do not saving the file. just log to console')
   .action(function(options) {
-    var data = require(process.env.PWD+'/subbuild.js');
+    // Load the subbuild module
+    var subbuild = require('../src/subbuild.js');
+    // Load the build script
+    var tmpData = require(process.env.PWD+'/subbuild.js');
+    // Add the subbuild functions to the build script.
+    // All subbuild functions can be executed at the script now.
+    tmpData(subbuild);
   })
   .on('--help', function() {
     console.log('  Examples:');
