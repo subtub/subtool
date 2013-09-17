@@ -16,11 +16,16 @@ describe('src/readme.js', function() {
     })
   })
 
-  // describe('#readme()', function() {
-  //   it('should return the readme headline.', function() {
-  //     readme.readme(function(data) {
-  //       assert.equal( 'foo', data );
-  //     })
-  //   })
-  // })
+  describe('#toc()', function() {
+    // test data
+    var data = [{title: 'General Information'},
+                {title: 'Getting Started'},
+                {title: 'Foo / Bar'}];
+
+    it('should return the table of content.', function() {
+      var toc = readme.toc(data);
+      assert.equal( '[General Information](#general-information)  \n[Getting Started](#getting-started)  \n[Foo / Bar](#foo--bar)  \n', toc );
+    })
+  })
+
 })
