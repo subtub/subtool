@@ -77,7 +77,7 @@ program
 program
   .command('readme')
   .description(descColor('generate the readme file'))
-  .option('-n, --no-save', 'do not saving the file. just log to console')
+  .option('-d, --display', 'Print the generated reamde content to console')
   .action(function(options) {
     // Load the .subfile at first.
     subfile.load(CWD, function(configData) {
@@ -86,7 +86,7 @@ program
         process.exit(1);
       } else {
         readme.generate(configData, function(data) {
-          if (options.noSave) {
+          if (options.display) {
             log(data, logConfig);
           } else {
             fs.writeFile('README.md', data, function (err) {
