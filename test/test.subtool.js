@@ -23,7 +23,7 @@ describe('bin/subtool', function() {
 
   testExec('tpl -h');
   testExec('tpl p5 -l');
-  testExec('tpl p5 -t sketch');
+  testExec('tpl p5 -s sketch');
 })
 
 /**
