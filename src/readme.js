@@ -1,6 +1,6 @@
 /**
  * readme.js
- * Everything is formatted in Markdown
+ * Everything is formatted using the markdown.js
  */
 
 
@@ -28,13 +28,12 @@ exports.headline = headline;
  * Generate a Table of Content string. Formatted in Markdown.
  */
 function toc(config) {
-  var tmp = md.header2('Table of Content')+'\n\n';
-
-  for (var i=0; i<config.readme.content.length; i++) {
-    tmp += md.link('#'+config.readme.content[i].title, config.readme.content[i].title)+'  \n';
+  var tmp = '';
+  for (var i=0; i<config.length; i++) {
+    var anchor = config[i].title.toLowerCase();
+    anchor = anchor.replace(/\s/g, '-').replace(/\//g, '');
+    tmp += md.link('#'+anchor, config[i].title)+'  \n';
   };
-  tmp += '\n';
-
   return tmp;
 }
 exports.toc = toc;
@@ -54,7 +53,9 @@ function generate(config, callback) {
 
       // Generate toc...
       if (config.readme.toc === true) {
-        tmp += toc(config);
+        tmp += md.header2('Table of Content')+'\n\n';
+        tmp += toc(config.readme.content);
+        tmp += '\n';
       };
 
       // Add markdown files...
