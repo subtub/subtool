@@ -2,6 +2,8 @@
  * Some Markdown functions to generate links, lists etc. strings.
  */
 
+var LINEBREAK = '\n';
+
 exports.link = function(url, title) {
   return '['+title+']('+url+')';
 }
@@ -54,7 +56,7 @@ exports.rule = function() {
 exports.list = function(arr) {
   var tmp = '';
   for (var i=0; i<arr.length; i++) {
-    tmp += '- '+arr[i]+'\n';
+    tmp += '- '+arr[i]+LINEBREAK;
   };
   return tmp;
 }
@@ -62,7 +64,7 @@ exports.list = function(arr) {
 exports.listOrdered = function(arr) {
   var tmp = '';
   for (var i=0; i<arr.length; i++) {
-    tmp += (i+1)+'. '+arr[i]+'\n';
+    tmp += (i+1)+'. '+arr[i]+LINEBREAK;
   };
   return tmp;
 }
@@ -70,7 +72,7 @@ exports.listOrdered = function(arr) {
 exports.linkList = function(arr) {
   var tmp = '';
   for (var i=0; i<arr.length; i++) {
-    tmp += '- ['+arr[i].title+']('+arr[i].url+')\n';
+    tmp += '- ['+arr[i].title+']('+arr[i].url+')'+LINEBREAK;
   };
   return tmp;
 }
