@@ -19,7 +19,7 @@ describe('bin/subtool', function() {
 
   testExec('readme -h');
   testExec('readme');
-  testExec('readme -n');
+  testExec('readme -d');
 
   testExec('tpl -h');
   testExec('tpl p5 -l');
