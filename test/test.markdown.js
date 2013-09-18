@@ -4,6 +4,76 @@ var markdown = require('./../src/markdown');
 
 describe('src/markdown.js', function() {
 
+  describe('#LINEBREAK', function() {
+    it('should get a linebreak as string.', function() {
+      assert.equal( '\n', markdown.LINEBREAK );
+    })
+  })
+
+  describe('#read()', function() {
+    it('should return an error object.', function() {
+      markdown.read(process.cwd()+'/not/correct/path.md', function(data) {
+        assert.equal( 34, data.errno );
+      });
+    })
+    it('should return the content of the markdown file without other include.', function() {
+      markdown.read(process.cwd()+'/test/files/markdown_simple.md', function(data) {
+        var result = '# Headline\n'+
+                     '\n'+
+                     'Lorem ipsum.\n'+
+                     'subtool';
+        assert.equal( result, data );
+      });
+    })
+    it('should return the content of the markdown file with a single included markdown file.', function() {
+      markdown.read(process.cwd()+'/test/files/markdown_include.md', function(data) {
+        var result = '# Headline\n'+
+                     '\n'+
+                     'Lorem ipsum.\n'+
+                     '\n'+
+                     '# Headline\n'+
+                     '\n'+
+                     'Lorem ipsum.\n'+
+                     'subtool\n'+
+                     '\n'+
+                     'subtool';
+        assert.equal( result, data );
+      })
+    })
+    it('should return the content of the markdown file with multiple included markdown files.', function() {
+      markdown.read(process.cwd()+'/test/files/markdown_include_multiple.md', function(data) {
+        var result = '# Headline\n'+
+                     '\n'+
+                     'Lorem ipsum.\n'+
+                     '\n'+
+                     '# Headline\n'+
+                     '\n'+
+                     'Lorem ipsum.\n'+
+                     'subtool\n'+
+                     '\n'+
+                     'subtub\n'+
+                     '\n'+
+                     '# Headline\n'+
+                     '\n'+
+                     'Lorem ipsum.\n'+
+                     'subtool\n'+
+                     '\n'+
+                     'subtool';
+        assert.equal( result, data );
+      })
+    })
+  })
+
+  describe('#readSync()', function() {
+    it('should return the content of the markdown file.', function() {
+      var result = '# Headline\n'+
+                   '\n'+
+                   'Lorem ipsum.\n'+
+                   'subtool';
+      assert.equal( result, markdown.readSync(process.cwd()+'/test/files/markdown_simple.md') );
+    })
+  })
+  
   describe('#link()', function() {
     it('should return a link.', function() {
       assert.equal( '[baz](http://www.foo.bar/)', markdown.link('http://www.foo.bar/', 'baz') );

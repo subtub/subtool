@@ -1,78 +1,141 @@
 /**
+ * Module dependencies.
+ */
+var fs = require('fs');
+
+
+/**
+ * The main object.
  * Some Markdown functions to generate links, lists etc. strings.
  */
+module.exports = markdown = {
 
-var LINEBREAK = '\n';
+  LINEBREAK: '\n',
 
-exports.link = function(url, title) {
-  return '['+title+']('+url+')';
+  link: function(url, title) {
+    return '['+title+']('+url+')';
+  },
+
+  image: function(url, altText) {
+    altText = altText || '';
+    return '!['+altText+']('+url+')';
+  },
+
+  header1: function(text) {
+    return '# '+text;
+  },
+
+  header2: function(text) {
+    return '## '+text;
+  },
+
+  header3: function(text) {
+    return '### '+text;
+  },
+
+  header4: function(text) {
+    return '#### '+text;
+  },
+
+  header5: function(text) {
+    return '##### '+text;
+  },
+
+  header6: function(text) {
+    return '###### '+text;
+  },
+
+  blockquotes: function(text) {
+    return '> '+text;
+  },
+
+  inlineCode: function(code) {
+    return '`'+code+'`';
+  },
+
+  blockCode: function(code) {
+    return '    '+code;
+  },
+
+  rule: function() {
+    return '---';
+  },
+
+  list: function(arr) {
+    var tmp = '';
+    for (var i=0; i<arr.length; i++) {
+      tmp += '- '+arr[i]+this.LINEBREAK;
+    };
+    return tmp;
+  },
+
+  listOrdered: function(arr) {
+    var tmp = '';
+    for (var i=0; i<arr.length; i++) {
+      tmp += (i+1)+'. '+arr[i]+this.LINEBREAK;
+    };
+    return tmp;
+  },
+
+  linkList: function(arr) {
+    var tmp = '';
+    for (var i=0; i<arr.length; i++) {
+      tmp += '- ['+arr[i].title+']('+arr[i].url+')'+this.LINEBREAK;
+    };
+    return tmp;
+  },
+
+  read: function(path, callback) {
+    fs.readFile(path, function(err, data) {
+      if (err) {
+        return callback(err);
+      } else {
+        var content = data.toString();
+        var tmp = include(content);
+        return callback(tmp);
+      };
+    });
+  },
+
+  readSync: function(path) {
+    var content = fs.readFileSync(path, 'utf-8');
+    var tmp = include(content);
+    return tmp;
+  }
+
+  // include: function(text) {
+  //   return include(text);
+  // }
+
 }
 
-exports.image = function(url, altText) {
-  altText = altText || '';
-  return '!['+altText+']('+url+')';
-}
+function include(text) {
+  var parseInclude = text.split('\\include{');
+  //console.log(parseInclude);
 
-exports.header1 = function(text) {
-  return '# '+text;
-}
+  // If an include string was found.
+  if (parseInclude.length > 1) {
+    var tmpText = parseInclude[0];
 
-exports.header2 = function(text) {
-  return '## '+text;
-}
+    for (var i=1; i<parseInclude.length; i++) {
+      //console.log( parseInclude[i] );
+      var tmpPath = parseInclude[i].split('}');
+      
+      // Read the file
+      // The first array object is the path.
+      //console.log(tmpPath[0]);
+      var tmpFile = markdown.readSync(process.env.PWD+tmpPath[0]);
 
-exports.header3 = function(text) {
-  return '### '+text;
-}
+      tmpText += tmpFile;
+      if (tmpPath.length > 0) {
+        tmpText += tmpPath[1];
+      }
+    };
+    return tmpText;
+  }
 
-exports.header4 = function(text) {
-  return '#### '+text;
-}
-
-exports.header5 = function(text) {
-  return '##### '+text;
-}
-
-exports.header6 = function(text) {
-  return '###### '+text;
-}
-
-exports.blockquotes = function(text) {
-  return '> '+text;
-}
-
-exports.inlineCode = function(code) {
-  return '`'+code+'`';
-}
-
-exports.blockCode = function(code) {
-  return '    '+code;
-}
-
-exports.rule = function() {
-  return '---';
-}
-
-exports.list = function(arr) {
-  var tmp = '';
-  for (var i=0; i<arr.length; i++) {
-    tmp += '- '+arr[i]+LINEBREAK;
-  };
-  return tmp;
-}
-
-exports.listOrdered = function(arr) {
-  var tmp = '';
-  for (var i=0; i<arr.length; i++) {
-    tmp += (i+1)+'. '+arr[i]+LINEBREAK;
-  };
-  return tmp;
-}
-
-exports.linkList = function(arr) {
-  var tmp = '';
-  for (var i=0; i<arr.length; i++) {
-    tmp += '- ['+arr[i].title+']('+arr[i].url+')'+LINEBREAK;
-  };
-  return tmp;
-}
+  // If no include was found...
+  else {
+    return text;
+  }
+};
