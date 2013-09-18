@@ -38,6 +38,7 @@ var logConfig = {silent: false, color: 'green'};
 program
   .version(pkg.version)
   .option('-S, --silent', 'silent mode')
+  .option('-N, --colorless', 'disable terminal color')
   .on('--help', function(){
     console.log('  Infos:');
     console.log();
@@ -207,6 +208,9 @@ program.parse(process.argv);
  */
 if (program.silent) {
   logConfig.silent = true;
+};
+if (program.colorless) {
+  logConfig = {silent: false};
 };
 
 /**
