@@ -58,18 +58,19 @@ function generate(config, callback) {
         tmp += '\n';
       };
 
-      // Add markdown files...
-      // var numOfFiles = find(process.env.PWD+config.readme.content).filter(function(file) { return file.match(/\.md$/); });
-      // for (var i=0; i<numOfFiles.length; i++) {
-      //   console.log('['+i+'] '+numOfFiles[i]);
-      //   var str = cat(numOfFiles[i]);
-      //   tmp += str;
-      // };
+      // Add the content
       for (var i=0; i<config.readme.content.length; i++) {
-        var tmpPath = process.env.PWD+config.readme.content[i].file;
-        //console.log('['+i+'] '+tmpPath);
-        var str = cat(tmpPath);
-        tmp += str;
+        var tmpPwd = process.env.PWD;
+        // If the files variable is a single string
+        if (typeof config.readme.content[i].file === 'string') {
+          tmp += cat(tmpPwd+config.readme.content[i].file);
+        };
+        // If the files variable is an array
+        if (config.readme.content[i].file instanceof Array) {
+          for (var j=0; j<config.readme.content[i].file.length; j++) {
+            tmp += cat(tmpPwd+config.readme.content[i].file[j]);;
+          };
+        };
       };
 
       // Add license...
