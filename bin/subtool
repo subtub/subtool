@@ -47,6 +47,34 @@ program
   });
 
 /**
+ * The update command
+ */
+program
+  .command('update')
+  .description(descColor('update the subtool'))
+  .action(function() {
+    var request = require('request');
+    var semver = require('semver');
+    // we need the latest package.json.
+    // lets request in from the github repository
+    request('https://raw.github.com/subtub/subtool/master/package.json', function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        // parse the body and get the latest version.
+        var tmp = JSON.parse(body);
+        var latestVersion = tmp.version;
+        // Check if a new version was released.
+        if (pkg.version === latestVersion) {
+          log('You have the latest version installed.', logConfig);
+        } else if (semver.lt(pkg.version, latestVersion)) {
+          log('A new version exists. Start Installing the new release.', logConfig);
+          exec('sudo npm uninstall -g subtool');
+          exec('sudo npm install -g https://github.com/subtub/subtool/tarball/master')
+        }
+      }
+    })
+  });
+
+/**
  * The init command
  */
 program
