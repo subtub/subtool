@@ -63,12 +63,12 @@ function generate(config, callback) {
         var tmpPwd = process.env.PWD;
         // If the files variable is a single string
         if (typeof config.readme.content[i].file === 'string') {
-          tmp += cat(tmpPwd+config.readme.content[i].file);
+          tmp += md.readSync(tmpPwd+config.readme.content[i].file);
         };
         // If the files variable is an array
         if (config.readme.content[i].file instanceof Array) {
           for (var j=0; j<config.readme.content[i].file.length; j++) {
-            tmp += cat(tmpPwd+config.readme.content[i].file[j]);;
+            tmp += md.readSync(tmpPwd+config.readme.content[i].file[j]);
           };
         };
       };
