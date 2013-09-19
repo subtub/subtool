@@ -15,6 +15,7 @@
   "dependencies": {
     "commander": "2.0.0",
     "shelljs": "0.2.4",
+    "execSync": "1.0.1-pre",
     "cli-color": "0.2.2"
   },
   "devDependencies": {
