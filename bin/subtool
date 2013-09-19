@@ -79,20 +79,28 @@ program
   .command('readme')
   .description(descColor('generate the readme file'))
   .option('-d, --display', 'Print the generated reamde content to console')
+  .option('-g, --git-commit', 'auto commit the README.md file.')
   .action(function(options) {
     // Load the .subfile at first.
     subfile.load(CWD, function(configData) {
       if (configData === false) {
         log('No .subfile file was found. please create one.', logConfig);
         process.exit(1);
-      } else {
+      }
+      else {
         readme.generate(configData, function(data) {
           if (options.display) {
             log(data, logConfig);
-          } else {
+          }
+          else {
             fs.writeFile('README.md', data, function (err) {
               if (err) throw err;
-              log('It\'s saved!', logConfig);
+              log('Readme file saved!', logConfig);
+
+              if (options.gitCommit) {
+                exec('git add README.md');
+                exec('git commit -m "README.md updated and auto commited by subtool [ci skip]"');
+              };
             });
             //travis.saveYml(process.env.PWD, configData.travis, function(data) {});
           };
@@ -103,7 +111,14 @@ program
   .on('--help', function() {
     console.log('  Examples:');
     console.log();
+    console.log('    # Generate the content and save the file.');
     console.log(infoColor('    $ subtool readme'));
+    console.log();
+    console.log('    # Generate the content and print to console.');
+    console.log(infoColor('    $ subtool readme -d'));
+    console.log();
+    console.log('    # Generate the file and git commit the changes.');
+    console.log(infoColor('    $ subtool readme -g'));
     console.log();
   });
 
