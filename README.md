@@ -29,7 +29,7 @@ To uninstall run:
     sudo npm uninstall -g subtool
 ## The .subfile  
 
-If you want to generate ```README.md``` files with the subtool, it need an ```.subfile``` to configure the generator.
+If you want to generate ```README.md``` files with the subtool, you need a ```.subfile``` to configure the generator.
 
 A ```.subfile``` looks like:  
 
