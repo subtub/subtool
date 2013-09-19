@@ -1,4 +1,5 @@
 # General Files
+*.DS_Store
 
 # Node.js Files
 /node_modules
