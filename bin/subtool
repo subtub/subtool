@@ -214,4 +214,4 @@ program
 program.parse(process.argv);
 
 programUtils.checkLogOptions();
-programUtils.ifNoCommandShowHelp();
+programUtils.ifNoArgsShowHelp();
