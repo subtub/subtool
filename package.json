@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "commander": "2.0.0",
+    "commander-utils": "https://github.com/subtub/commander-utils/tarball/master",
     "shelljs": "0.2.4",
     "execSync": "1.0.1-pre",
     "request": "2.27.0",
