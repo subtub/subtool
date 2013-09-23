@@ -91,12 +91,12 @@ function generate(config, callback) {
       tmp += contributors();
 
       // Add license...
-      license.get(config.license, 'subtub', '2013', false, function(data) {
+      license.get(config.license, 'subtub', '2013', function(dataLicense) {
         tmp += md.header2('License')+'\n\n';
         tmp += '```\n';
-        tmp += data;
+        tmp += dataLicense;
         tmp += '```\n';
-        tmp += utils.generatedInfoMarkdown();
+        tmp += utils.generateInfoMarkdown(data.version);
         return callback(tmp);
       });
     });
