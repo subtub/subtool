@@ -32,7 +32,7 @@ exports.isTypeValid = isTypeValid;
  * Small helper function to load the license templates and
  * replace author and date value.
  */
-function get(license, author, date, logSilent, callback) {
+function get(license, author, date, callback) {
   isTypeValid(license, function(data) {
     if (data) {
       fs.readFile(path.dirname(__dirname)+'/templates/license/'+license+'.txt', function read(err, data) {
@@ -49,11 +49,10 @@ function get(license, author, date, logSilent, callback) {
         };
       })
     } else {
-      log('', {silent:logSilent, color:'red'});
-      log('  error: not correct license type. use the following types:', {silent:logSilent, color:'red'});
-      log('         '+TYPES.toString(), {silent:logSilent, color:'red'});
-      log('', {silent:logSilent, color:'red'});
-      return false;
+      var tmp = '\n';
+      tmp += '  error: not correct license type. use the following types:\n';
+      tmp += '         '+TYPES.toString()+'\n';
+      callback(tmp);
     }
   });
 }
@@ -62,8 +61,8 @@ exports.get = get;
 /**
  * Save the license to textfile.
  */
-exports.save = function(path, license, author, date, logSilent, callback) {
-  get(license, author, date, logSilent, function(data) {
+exports.save = function(path, license, author, date, callback) {
+  get(license, author, date, function(data) {
     fs.writeFile(path+'/'+FILENAME, data, function (err) {
       if (err) {
         callback(err);
