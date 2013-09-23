@@ -12,6 +12,7 @@ var fs = require('fs');
 var path = require('path');
 var clc = require('cli-color');
 var program = require('commander');
+var CommanderUtils = require('commander-utils');
 var shell = require('shelljs/global');
 var pkg = require('./../package.json');
 var license = require('./../src/license');
@@ -30,48 +31,23 @@ var CWD = process.cwd();
  */
 var descColor = clc.green;
 var infoColor = clc.yellow;
-var logConfig = {silent: false, color: 'green'};
+
+var programUtils = new CommanderUtils(program, pkg);
+programUtils.setVersion();
+programUtils.addLogOptions();
+programUtils.commandUpdate({packageJsonUrl: 'https://raw.github.com/subtub/subtool/master/package.json',
+                            installUrl: 'https://github.com/subtub/subtool/tarball/master'});
+
 
 /**
  * Set the version of the cli and add some additional infos to help
  */
 program
-  .version(pkg.version)
-  .option('-S, --silent', 'silent mode')
-  .option('-N, --colorless', 'disable terminal color')
   .on('--help', function(){
     console.log('  Infos:');
     console.log();
     console.log(infoColor('    github.com/subtub/subtool'));
     console.log();
-  });
-
-/**
- * The update command
- */
-program
-  .command('update')
-  .description(descColor('update the subtool'))
-  .action(function() {
-    var request = require('request');
-    var semver = require('semver');
-    // we need the latest package.json.
-    // lets request in from the github repository
-    request('https://raw.github.com/subtub/subtool/master/package.json', function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        // parse the body and get the latest version.
-        var tmp = JSON.parse(body);
-        var latestVersion = tmp.version;
-        // Check if a new version was released.
-        if (pkg.version === latestVersion) {
-          log('You have the latest version installed.', logConfig);
-        } else if (semver.lt(pkg.version, latestVersion)) {
-          log('A new version exists. Start Installing the new release.', logConfig);
-          exec('sudo npm uninstall -g subtool');
-          exec('sudo npm install -g https://github.com/subtub/subtool/tarball/master')
-        }
-      }
-    })
   });
 
 /**
@@ -82,9 +58,7 @@ program
   .description(descColor('save a .subfile to the current directory'))
   .option('-t, --travis', 'add a .travis.yml file')
   .action(function(options) {
-    
     var tmpPath = path.dirname(__dirname);
-    //cat(tmpPath+'/templates/.subfile').to(CWD+'/.subfile');
     cp(tmpPath+'/templates/.subfile', CWD+'/.subfile');
     mkdir(CWD+'/docs');
     cp(tmpPath+'/templates/general_information.md', CWD+'/docs/general_information.md');
@@ -94,10 +68,10 @@ program
       tmp.to('.travis.yml');
     };
 
-    log('A `.subfile` has been placed in this directory. You are now', logConfig);
-    log('ready to start writing your README.md file content. Please read', logConfig);
-    log('the comments in the `.subfile` as well as documentation on', logConfig);
-    log('the project page for more information on using subtool.', logConfig);
+    programUtils.log.info('A `.subfile` has been placed in this directory. You are now');
+    programUtils.log.info('ready to start writing your README.md file content. Please read');
+    programUtils.log.info('the comments in the `.subfile` as well as documentation on');
+    programUtils.log.info('the project page for more information on using subtool.');
   })
 
 /**
@@ -112,18 +86,18 @@ program
     // Load the .subfile at first.
     subfile.load(CWD, function(configData) {
       if (configData === false) {
-        log('No .subfile file was found. please create one.', logConfig);
+        programUtils.log.info('No .subfile file was found. please create one.');
         process.exit(1);
       }
       else {
         readme.generate(configData, function(data) {
           if (options.display) {
-            log(data, logConfig);
+            programUtils.log.info(data);
           }
           else {
             fs.writeFile('README.md', data, function (err) {
               if (err) throw err;
-              log('Readme file saved!', logConfig);
+              programUtils.log.info('Readme file saved!');
 
               if (options.gitCommit) {
                 exec('git add README.md');
@@ -137,17 +111,12 @@ program
     });
   })
   .on('--help', function() {
-    console.log('  Examples:');
-    console.log();
-    console.log('    # Generate the content and save the file.');
-    console.log(infoColor('    $ subtool readme'));
-    console.log();
-    console.log('    # Generate the content and print to console.');
-    console.log(infoColor('    $ subtool readme -d'));
-    console.log();
-    console.log('    # Generate the file and git commit the changes.');
-    console.log(infoColor('    $ subtool readme -g'));
-    console.log();
+    programUtils.usageExamples([{description: 'generate the content and save the file',
+                                 command: 'subtool readme'},
+                                {description: 'generate the content and print to console',
+                                 command: 'subtool readme -d'},
+                                {description: 'generate the file and git commit the changes',
+                                 command: 'subtool readme -g'}]);
   });
 
 /**
@@ -170,22 +139,22 @@ program
     // Else we print out the license.
     if (options.save) {
       license.save(CWD, type, author, date, logSilent, function(data) {
-        log(license.FILENAME+' saved to current directory.', logSilent)
+        programUtils.log.info(license.FILENAME+' saved to current directory.');
       });
     }
     else {
       license.get(type, author, date, logConfig, function(data) {
-        console.log(data);
+        programUtils.log.info(data);
       });
     };
   })
   .on('--help', function() {
-    console.log('  Examples:');
-    console.log();
-    console.log(infoColor('    $ subtool license mit -a subtub'));
-    console.log(infoColor('    $ subtool license mit -a "karl koch" -y 2013'));
-    console.log(infoColor('    $ subtool license mit -a "karl koch" -y "2010 - 2013"'));
-    console.log();
+    programUtils.usageExamples([{description: 'generate a mit license and set an author name',
+                                 command: 'subtool license mit -a subtub'},
+                                {description: 'generate a mit license and set an author first-, last-name + date',
+                                 command: 'subtool license mit -a "karl koch" -y 2013'},
+                                {description: 'generate a mit license and set an author first-, last-name + date range',
+                                 command: 'subtool license mit -a "karl koch" -y "2010 - 2013"'}]);
   });
 
 /**
@@ -202,12 +171,12 @@ program
     
     // List all available template types
     if (options.all) {
-      log('list of available types:', logConfig);
-      log('', logConfig);
+      programUtils.log.info('list of available types:');
+      programUtils.log.info('');
       for (var i = 0; i < indexJson.content.length; i++) {
-        log('  - '+indexJson.content[i].command, logConfig);
-        log('    '+indexJson.content[i].description, logConfig);
-        log('', logConfig);
+        programUtils.log.info('  - '+indexJson.content[i].command);
+        programUtils.log.info('    '+indexJson.content[i].description);
+        programUtils.log.info('');
       };
     }
 
@@ -218,11 +187,11 @@ program
           // Check the options
           if (options.list) {
             var list = fs.readdirSync(path.dirname(__dirname)+'/templates'+indexJson.content[i].folder)
-            log('choose between the following templates:\n', logConfig);
+            programUtils.log.info('choose between the following templates:\n');
             for (var i=0; i<list.length; i++) {
-              log('  '+list[i], logConfig);
+              programUtils.log.info('  '+list[i]);
             };
-            log('', logConfig);
+            programUtils.log.info('');
           }
           if (options.sample) {
             var tmpPath = path.dirname(__dirname)+'/templates'+indexJson.content[i].folder+'/'+options.sample;
@@ -235,10 +204,8 @@ program
     };
   })
   .on('--help', function() {
-    console.log('  Examples:');
-    console.log();
-    console.log(infoColor('    $ subtool template p5 -a class'));
-    console.log();
+    programUtils.usageExamples([{description: 'get the processing class template',
+                                 command: 'subtool template p5 -a class'}]);
   });
 
 /**
@@ -246,17 +213,5 @@ program
  */
 program.parse(process.argv);
 
-/**
- * Check some main options and set variables.
- */
-if (program.silent) {
-  logConfig.silent = true;
-};
-if (program.colorless) {
-  logConfig = {silent: false};
-};
-
-/**
- * If no command exist, show help
- */
-if (!program.args.length) program.help();
+programUtils.checkLogOptions();
+programUtils.ifNoCommandShowHelp();
