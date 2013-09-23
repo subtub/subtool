@@ -5,5 +5,5 @@ If you want to generate ```README.md``` files with the subtool, you need a ```.s
 A ```.subfile``` looks like:  
 
 ```
-\include{/templates/.subfile}
+{{include:/templates/.subfile}}
 ```
