@@ -105,8 +105,8 @@ module.exports = markdown = {
 
 }
 
-var INCLUDE_START = '\\include{';
-var INCLUDE_STOP = '}';
+var INCLUDE_START = '{{include:';
+var INCLUDE_STOP = '}}';
 
 function include(text) {
   var parseInclude = text.split(INCLUDE_START);
