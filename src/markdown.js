@@ -65,7 +65,7 @@ module.exports = markdown = {
     var tmp = '';
     for (var i=0; i<arr.length; i++) {
       tmp += '- '+arr[i]+this.LINEBREAK;
-    };
+    }
     return tmp;
   },
 
@@ -73,7 +73,7 @@ module.exports = markdown = {
     var tmp = '';
     for (var i=0; i<arr.length; i++) {
       tmp += (i+1)+'. '+arr[i]+this.LINEBREAK;
-    };
+    }
     return tmp;
   },
 
@@ -81,7 +81,7 @@ module.exports = markdown = {
     var tmp = '';
     for (var i=0; i<arr.length; i++) {
       tmp += '- ['+arr[i].title+']('+arr[i].url+')'+this.LINEBREAK;
-    };
+    }
     return tmp;
   },
 
@@ -93,7 +93,7 @@ module.exports = markdown = {
         var content = data.toString();
         var tmp = include(content);
         return callback(tmp);
-      };
+      }
     });
   },
 
@@ -103,7 +103,7 @@ module.exports = markdown = {
     return tmp;
   }
 
-}
+};
 
 var INCLUDE_START = '{{include:';
 var INCLUDE_STOP = '}}';
@@ -121,11 +121,11 @@ function include(text) {
       if (tmpPath.length > 0) {
         tmpText += tmpPath[1];
       }
-    };
+    }
     return tmpText;
   }
   // If no include was found...
   else {
     return text;
   }
-};
+}

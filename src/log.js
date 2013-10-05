@@ -25,27 +25,27 @@ module.exports = function(message, config) {
 
   // check the config values
   if (config !== undefined) {
-  	if (config.silent !== undefined) silent = config.silent;
-  	if (config.color !== undefined) {
-  		if (config.color === 'red') color = clc.red;
-  		else if (config.color === 'green') color = clc.green;
-  		else if (config.color === 'yellow') color = clc.yellow;
-  		else if (config.color === 'blue') color = clc.blue;
-  		else if (config.color === 'magenta') color = clc.magenta;
-  		else if (config.color === 'cyan') color = clc.cyan;
-  		else if (config.color === 'white') color = clc.white;
-  	}
+    if (config.silent !== undefined) silent = config.silent;
+    if (config.color !== undefined) {
+      if (config.color === 'red') color = clc.red;
+      else if (config.color === 'green') color = clc.green;
+      else if (config.color === 'yellow') color = clc.yellow;
+      else if (config.color === 'blue') color = clc.blue;
+      else if (config.color === 'magenta') color = clc.magenta;
+      else if (config.color === 'cyan') color = clc.cyan;
+      else if (config.color === 'white') color = clc.white;
+    }
   }
 
   // log the message
   if (silent === false) {
-  	if (color === false) {
+    if (color === false) {
       console.log(message);
     } else {
-    	console.log(color(message));
+      console.log(color(message));
     }
     return message;
   } else {
-  	return '';
+    return '';
   }
-}
+};

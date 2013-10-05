@@ -8,14 +8,14 @@ describe('src/license.js', function() {
     it('should return true if the license is correct.', function() {
       license.isTypeValid('mit', function(data) {
         assert.equal( true, data );
-      })
-    })
+      });
+    });
     it('should return false if the license is correct.', function() {
       license.isTypeValid('not correct', function(data) {
         assert.equal( false, data );
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('#get()', function() {
     var mit = 'The MIT License (MIT)  \n'+
@@ -43,22 +43,22 @@ describe('src/license.js', function() {
     it('should return the mit license.', function() {
       license.get('mit', 'subtub', '2013', function(data) {
         assert.equal( mit, data );
-      })
-    })
+      });
+    });
 
     it('should return an error message if the license type is not correct.', function() {
       license.get('notCorrect', 'subtub', '2013', function(data) {
         assert.equal( '\n  error: not correct license type. use the following types:\n         apache,freebsd,isc,mit,newbsd\n', data );
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('#save()', function() {
     it('should return true if file saved correct.', function() {
       license.save('testing', 'mit', 'subtub', '2013', function(data) {
         assert.equal( true, data );
-      })
-    })
-  })
+      });
+    });
+  });
 
-})
+});

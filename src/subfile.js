@@ -41,7 +41,7 @@ exports.load = function(path, callback) {
       return callback(false);
     }
   });
-}
+};
 
 /**
  * Check the config file.
@@ -52,4 +52,4 @@ exports.load = function(path, callback) {
 exports.lint = function(path) {
   // TODO
   return false;
-}
+};

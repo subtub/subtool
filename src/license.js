@@ -22,8 +22,8 @@ function isTypeValid(license, callback) {
   for (var i=0; i<TYPES.length; i++) {
     if (license === TYPES[i]) {
       valid = true;
-    };
-  };
+    }
+  }
   callback(valid);
 }
 exports.isTypeValid = isTypeValid;
@@ -46,8 +46,8 @@ function get(license, author, date, callback) {
 
         if (callback && typeof(callback) === "function") {
           callback(replaced);
-        };
-      })
+        }
+      });
     } else {
       var tmp = '\n';
       tmp += '  error: not correct license type. use the following types:\n';
@@ -71,4 +71,4 @@ exports.save = function(path, license, author, date, callback) {
       }
     });
   });
-}
+};

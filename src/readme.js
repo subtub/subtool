@@ -33,7 +33,7 @@ function toc(config) {
     var anchor = config[i].title.toLowerCase();
     anchor = anchor.replace(/\s/g, '-').replace(/\//g, '');
     tmp += md.link('#'+anchor, config[i].title)+'  \n';
-  };
+  }
   return tmp;
 }
 exports.toc = toc;
@@ -64,14 +64,14 @@ function generate(config, callback) {
       // Travis-ci badge
       if (config.travis) {
         tmp += travis.badgeMarkdown(config.github.username, config.github.project)+'\n\n';
-      };
+      }
 
       // Generate toc...
       if (config.readme.toc === true) {
         tmp += md.header2('Table of Content')+'\n\n';
         tmp += toc(config.readme.content);
         tmp += '\n';
-      };
+      }
 
       // Add the content
       for (var i=0; i<config.readme.content.length; i++) {
@@ -79,14 +79,14 @@ function generate(config, callback) {
         // If the files variable is a single string
         if (typeof config.readme.content[i].file === 'string') {
           tmp += md.readSync(tmpPwd+config.readme.content[i].file);
-        };
+        }
         // If the files variable is an array
         if (config.readme.content[i].file instanceof Array) {
           for (var j=0; j<config.readme.content[i].file.length; j++) {
             tmp += md.readSync(tmpPwd+config.readme.content[i].file[j]);
-          };
-        };
-      };
+          }
+        }
+      }
 
       tmp += contributors();
 

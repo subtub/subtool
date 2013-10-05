@@ -24,7 +24,7 @@ describe('bin/subtool', function() {
   testExec('tpl -h');
   testExec('tpl p5 -l');
   testExec('tpl p5 -s sketch');
-})
+});
 
 /**
  * Small execution test helper.
@@ -34,5 +34,5 @@ function testExec(cmd) {
   it('execute bin/subtool '+cmd, function() {
     var tmpCode = exec('node bin/subtool '+cmd, {silent:true}).code;
     assert.equal( 0, tmpCode);
-  })
+  });
 }

@@ -17,8 +17,8 @@ exports.badgeMarkdown = function(githubUsername, githubProject, branch) {
     return md.link(url, md.image(img, 'Build Status'));
   } else {
     return false;
-  };
-}
+  }
+};
 
 /**
  * Generate the content for a travis file.
@@ -40,14 +40,14 @@ function generateYml(config) {
     if (config.version instanceof Array) {
       for (var i=0; i<config.version.length; i++) {
         tmp += '  - '+config.version[i]+'\n';  
-      };
+      }
     }
     // if it is a string
     else if (typeof config.version === 'string'){
       tmp += '  - '+config.version+'\n';
-    };
+    }
     return tmp;
-  };
+  }
 }
 exports.generateYml = generateYml;
 
@@ -65,4 +65,4 @@ exports.saveYml = function(path, config, callback) {
       return callback(true);
     }
   });
-}
+};
