@@ -4,6 +4,7 @@
 # Node.js Files
 /node_modules
 
-# Test Files
+# Test/Report Files
 /testing
 test/LICENSE.txt
+report/
