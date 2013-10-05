@@ -19,3 +19,12 @@ hint:
 
 .PHONY: hint
 
+###
+# Report Task
+###
+
+report:
+	@node node_modules/.bin/plato -t "subtool" -r --dir report src/
+
+.PHONY: report
+
