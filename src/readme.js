@@ -43,7 +43,7 @@ exports.toc = toc;
  */
 function contributors() {
   var sh = require('execSync');
-  var summary = sh.exec('sh '+process.cwd()+'/assets/git-extras/bin/git-summary');
+  var summary = sh.exec('sh '+__dirname+'/../assets/git-extras/bin/git-summary');
 
   var result = md.header2('Contributors')+'\n\n';
   result += '```';
