@@ -17,7 +17,7 @@ exports.FILENAME = FILENAME;
 /**
  * The valid version
  */
-var VERSION = '0.0.1';
+var VERSION = '0.0.2';
 
 /**
  * Load a config file.
@@ -41,7 +41,7 @@ exports.load = function(path, callback) {
       return callback(false);
     }
   });
-}
+};
 
 /**
  * Check the config file.
@@ -52,4 +52,4 @@ exports.load = function(path, callback) {
 exports.lint = function(path) {
   // TODO
   return false;
-}
+};

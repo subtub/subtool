@@ -12,6 +12,7 @@ var fs = require('fs');
 var path = require('path');
 var clc = require('cli-color');
 var program = require('commander');
+var CommanderUtils = require('commander-utils');
 var shell = require('shelljs/global');
 var pkg = require('./../package.json');
 var license = require('./../src/license');
@@ -19,6 +20,21 @@ var log = require('./../src/log');
 var readme = require('./../src/readme');
 var subfile = require('./../src/subfile');
 var travis = require('./../src/travis-ci');
+
+
+/**
+ * Initialize the commander-utils module.
+ */
+CommanderUtils(program, pkg);
+
+program
+  .setDescription('This is a detailed commander-utils example tool.\nIf we use the config parameter, we can overwrite some packageJson parameter.')
+  .setUpdate({
+    name: 'subtool',
+    packageJsonUrl: 'https://raw.github.com/subtub/subtool/master/package.json',
+    downloadUrl: 'https://github.com/subtub/subtool/tarball/master'
+  });
+
 
 /**
  * The current working directory of the terminal.
@@ -30,14 +46,11 @@ var CWD = process.cwd();
  */
 var descColor = clc.green;
 var infoColor = clc.yellow;
-var logConfig = {silent: false, color: 'green'};
 
 /**
  * Set the version of the cli and add some additional infos to help
  */
 program
-  .version(pkg.version)
-  .option('-S, --silent', 'silent mode')
   .on('--help', function(){
     console.log('  Infos:');
     console.log();
@@ -53,9 +66,7 @@ program
   .description(descColor('save a .subfile to the current directory'))
   .option('-t, --travis', 'add a .travis.yml file')
   .action(function(options) {
-    
     var tmpPath = path.dirname(__dirname);
-    //cat(tmpPath+'/templates/.subfile').to(CWD+'/.subfile');
     cp(tmpPath+'/templates/.subfile', CWD+'/.subfile');
     mkdir(CWD+'/docs');
     cp(tmpPath+'/templates/general_information.md', CWD+'/docs/general_information.md');
@@ -65,10 +76,10 @@ program
       tmp.to('.travis.yml');
     };
 
-    log('A `.subfile` has been placed in this directory. You are now', logConfig);
-    log('ready to start writing your README.md file content. Please read', logConfig);
-    log('the comments in the `.subfile` as well as documentation on', logConfig);
-    log('the project page for more information on using subtool.', logConfig);
+    program.log.info('A `.subfile` has been placed in this directory. You are now');
+    program.log.info('ready to start writing your README.md file content. Please read');
+    program.log.info('the comments in the `.subfile` as well as documentation on');
+    program.log.info('the project page for more information on using subtool.');
   })
 
 /**
@@ -77,21 +88,29 @@ program
 program
   .command('readme')
   .description(descColor('generate the readme file'))
-  .option('-n, --no-save', 'do not saving the file. just log to console')
+  .option('-d, --display', 'Print the generated reamde content to console')
+  .option('-g, --git-commit', 'auto commit the README.md file.')
   .action(function(options) {
     // Load the .subfile at first.
     subfile.load(CWD, function(configData) {
       if (configData === false) {
-        log('No .subfile file was found. please create one.', logConfig);
+        program.log.info('No .subfile file was found. please create one.');
         process.exit(1);
-      } else {
+      }
+      else {
         readme.generate(configData, function(data) {
-          if (options.noSave) {
-            log(data, logConfig);
-          } else {
+          if (options.display) {
+            program.log.info(data);
+          }
+          else {
             fs.writeFile('README.md', data, function (err) {
               if (err) throw err;
-              log('It\'s saved!', logConfig);
+              program.log.info('Readme file saved!');
+
+              if (options.gitCommit) {
+                exec('git add README.md');
+                exec('git commit -m "README.md updated and auto commited by subtool [ci skip]"');
+              };
             });
             //travis.saveYml(process.env.PWD, configData.travis, function(data) {});
           };
@@ -100,10 +119,12 @@ program
     });
   })
   .on('--help', function() {
-    console.log('  Examples:');
-    console.log();
-    console.log(infoColor('    $ subtool readme'));
-    console.log();
+    program.commandExample([{description: 'generate the content and save the file',
+                                 command: 'subtool readme'},
+                                {description: 'generate the content and print to console',
+                                 command: 'subtool readme -d'},
+                                {description: 'generate the file and git commit the changes',
+                                 command: 'subtool readme -g'}]);
   });
 
 /**
@@ -126,22 +147,22 @@ program
     // Else we print out the license.
     if (options.save) {
       license.save(CWD, type, author, date, logSilent, function(data) {
-        log(license.FILENAME+' saved to current directory.', logSilent)
+        program.log.info(license.FILENAME+' saved to current directory.');
       });
     }
     else {
-      license.get(type, author, date, logConfig, function(data) {
-        console.log(data);
+      license.get(type, author, date, function(data) {
+        program.log.info(data);
       });
     };
   })
   .on('--help', function() {
-    console.log('  Examples:');
-    console.log();
-    console.log(infoColor('    $ subtool license mit -a subtub'));
-    console.log(infoColor('    $ subtool license mit -a "karl koch" -y 2013'));
-    console.log(infoColor('    $ subtool license mit -a "karl koch" -y "2010 - 2013"'));
-    console.log();
+    program.commandExample([{description: 'generate a mit license and set an author name',
+                                 command: 'subtool license mit -a subtub'},
+                                {description: 'generate a mit license and set an author first-, last-name + date',
+                                 command: 'subtool license mit -a "karl koch" -y 2013'},
+                                {description: 'generate a mit license and set an author first-, last-name + date range',
+                                 command: 'subtool license mit -a "karl koch" -y "2010 - 2013"'}]);
   });
 
 /**
@@ -158,12 +179,12 @@ program
     
     // List all available template types
     if (options.all) {
-      log('list of available types:', logConfig);
-      log('', logConfig);
+      program.log.info('list of available types:');
+      program.log.info('');
       for (var i = 0; i < indexJson.content.length; i++) {
-        log('  - '+indexJson.content[i].command, logConfig);
-        log('    '+indexJson.content[i].description, logConfig);
-        log('', logConfig);
+        program.log.info('  - '+indexJson.content[i].command);
+        program.log.info('    '+indexJson.content[i].description);
+        program.log.info('');
       };
     }
 
@@ -174,11 +195,11 @@ program
           // Check the options
           if (options.list) {
             var list = fs.readdirSync(path.dirname(__dirname)+'/templates'+indexJson.content[i].folder)
-            log('choose between the following templates:\n', logConfig);
+            program.log.info('choose between the following templates:\n');
             for (var i=0; i<list.length; i++) {
-              log('  '+list[i], logConfig);
+              program.log.info('  '+list[i]);
             };
-            log('', logConfig);
+            program.log.info('');
           }
           if (options.sample) {
             var tmpPath = path.dirname(__dirname)+'/templates'+indexJson.content[i].folder+'/'+options.sample;
@@ -191,25 +212,13 @@ program
     };
   })
   .on('--help', function() {
-    console.log('  Examples:');
-    console.log();
-    console.log(infoColor('    $ subtool template p5 -a class'));
-    console.log();
+    program.commandExample([{description: 'get the processing class template',
+                                  command: 'subtool template p5 -a class'}]);
   });
 
 /**
  * Parse the process arguments
  */
-program.parse(process.argv);
-
-/**
- * Check some main options and set variables.
- */
-if (program.silent) {
-  logConfig.silent = true;
-};
-
-/**
- * If no command exist, show help
- */
-if (!program.args.length) program.help();
+program
+  .parseUtils()
+  .parse(process.argv);

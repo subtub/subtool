@@ -14,10 +14,15 @@
   },
   "dependencies": {
     "commander": "2.0.0",
+    "commander-utils": "https://github.com/subtub/commander-utils/archive/v0.0.3.tar.gz",
     "shelljs": "0.2.4",
-    "cli-color": "0.2.2"
+    "execSync": "1.0.1-pre",
+    "request": "2.27.0",
+    "cli-color": "0.2.3"
   },
   "devDependencies": {
-    "mocha": "1.12.1"
+    "mocha": "1.12.1",
+    "jshint": "2.1.11",
+    "plato": "0.6.2"
   }
 }

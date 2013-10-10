@@ -1,5 +1,5 @@
 // subtool configuration file
-module.exports = { version: '0.0.1',
+module.exports = { version: '0.0.2',
 
   // Set GitHub User- and Project-Name.
   github: {
@@ -16,7 +16,7 @@ module.exports = { version: '0.0.1',
     ]
   },
   
-  // Set the type of License we want to use. Choose between the following types:
+  // Set the type of License you want to use. Choose between the following types:
   // apache, freebsd, isc, mit, newbsd
   license: 'mit',
 
