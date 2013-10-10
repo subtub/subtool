@@ -119,7 +119,7 @@ program
     });
   })
   .on('--help', function() {
-    program.usageExamples([{description: 'generate the content and save the file',
+    program.commandExample([{description: 'generate the content and save the file',
                                  command: 'subtool readme'},
                                 {description: 'generate the content and print to console',
                                  command: 'subtool readme -d'},
@@ -157,7 +157,7 @@ program
     };
   })
   .on('--help', function() {
-    program.usageExamples([{description: 'generate a mit license and set an author name',
+    program.commandExample([{description: 'generate a mit license and set an author name',
                                  command: 'subtool license mit -a subtub'},
                                 {description: 'generate a mit license and set an author first-, last-name + date',
                                  command: 'subtool license mit -a "karl koch" -y 2013'},
@@ -222,6 +222,3 @@ program
 program
   .parseUtils()
   .parse(process.argv);
-
-program.checkLogOptions();
-program.ifNoArgsShowHelp();
