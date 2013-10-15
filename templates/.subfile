@@ -1,5 +1,5 @@
 // subtool configuration file
-module.exports = { version: '0.0.2',
+module.exports = { version: '0.0.4',
 
   // Set GitHub User- and Project-Name.
   github: {
