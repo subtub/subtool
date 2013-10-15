@@ -24,6 +24,10 @@ function headline(name, version) {
 }
 exports.headline = headline;
 
+function backToTOC() {
+  return '_[back to table of content](#table-of-content)_'
+}
+
 /**
  * Generate a Table of Content string. Formatted in Markdown.
  */
@@ -49,6 +53,7 @@ function contributors() {
   result += '```';
   result += summary.stdout;
   result += '```\n\n';
+  result += backToTOC();
 
   return result;
 }
@@ -96,6 +101,8 @@ function generate(config, callback) {
         tmp += '```\n';
         tmp += dataLicense;
         tmp += '```\n';
+        tmp += backToTOC();
+        tmp += '\n';
         tmp += utils.generateInfoMarkdown(data.version);
         return callback(tmp);
       });
