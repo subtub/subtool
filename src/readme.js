@@ -25,7 +25,7 @@ function headline(name, version) {
 exports.headline = headline;
 
 function backToTOC() {
-  return '_[back to table of content](#table-of-content)_'
+  return '\n_[back to table of content](#table-of-content)_\n'
 }
 
 /**
@@ -84,11 +84,13 @@ function generate(config, callback) {
         // If the files variable is a single string
         if (typeof config.readme.content[i].file === 'string') {
           tmp += md.readSync(tmpPwd+config.readme.content[i].file);
+          tmp += backToTOC();
         }
         // If the files variable is an array
         if (config.readme.content[i].file instanceof Array) {
           for (var j=0; j<config.readme.content[i].file.length; j++) {
             tmp += md.readSync(tmpPwd+config.readme.content[i].file[j]);
+            tmp += backToTOC();
           }
         }
       }
