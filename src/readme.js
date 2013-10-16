@@ -24,6 +24,10 @@ function headline(name, version) {
 }
 exports.headline = headline;
 
+function backToTOC() {
+  return '\n_[back to table of content](#table-of-content)_\n'
+}
+
 /**
  * Generate a Table of Content string. Formatted in Markdown.
  */
@@ -49,6 +53,7 @@ function contributors() {
   result += '```';
   result += summary.stdout;
   result += '```\n\n';
+  result += backToTOC();
 
   return result;
 }
@@ -79,11 +84,13 @@ function generate(config, callback) {
         // If the files variable is a single string
         if (typeof config.readme.content[i].file === 'string') {
           tmp += md.readSync(tmpPwd+config.readme.content[i].file);
+          tmp += backToTOC();
         }
         // If the files variable is an array
         if (config.readme.content[i].file instanceof Array) {
           for (var j=0; j<config.readme.content[i].file.length; j++) {
             tmp += md.readSync(tmpPwd+config.readme.content[i].file[j]);
+            tmp += backToTOC();
           }
         }
       }
@@ -96,6 +103,8 @@ function generate(config, callback) {
         tmp += '```\n';
         tmp += dataLicense;
         tmp += '```\n';
+        tmp += backToTOC();
+        tmp += '\n';
         tmp += utils.generateInfoMarkdown(data.version);
         return callback(tmp);
       });
