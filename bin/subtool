@@ -8,19 +8,9 @@
 /**
  * Module dependencies.
  */
-var fs = require('fs');
-var path = require('path');
-var clc = require('cli-color');
 var program = require('commander');
 var CommanderUtils = require('commander-utils');
-var shell = require('shelljs/global');
 var pkg = require('./../package.json');
-var license = require('./../src/license');
-var log = require('./../src/log');
-var readme = require('./../src/readme');
-var subfile = require('./../src/subfile');
-var travis = require('./../src/travis-ci');
-
 
 /**
  * Initialize the commander-utils module.
@@ -28,193 +18,30 @@ var travis = require('./../src/travis-ci');
 CommanderUtils(program, pkg);
 
 program
-  .setDescription('This is a detailed commander-utils example tool.\nIf we use the config parameter, we can overwrite some packageJson parameter.')
+  .setDescription('this is an internal subtub tool.\nit should generate readme, license and other files for our projects and repositories.')
   .setUpdate({
     name: 'subtool',
     packageJsonUrl: 'https://raw.github.com/subtub/subtool/master/package.json',
     downloadUrl: 'https://github.com/subtub/subtool/tarball/master'
   });
 
-
-/**
- * The current working directory of the terminal.
- */
-var CWD = process.cwd();
-
-/**
- * Some variables we need globally.
- */
-var descColor = clc.green;
-var infoColor = clc.yellow;
-
 /**
  * Set the version of the cli and add some additional infos to help
  */
 program
   .on('--help', function(){
-    console.log('  Infos:');
-    console.log();
-    console.log(infoColor('    github.com/subtub/subtool'));
-    console.log();
+    console.log('  Infos:\n');
+    console.log('    <https://www.github.com/subtub/subtool>\n');
   });
 
 /**
- * The init command
+ * The sub-commands
  */
 program
-  .command('init')
-  .description(descColor('save a .subfile to the current directory'))
-  .option('-t, --travis', 'add a .travis.yml file')
-  .action(function(options) {
-    var tmpPath = path.dirname(__dirname);
-    cp(tmpPath+'/templates/.subfile', CWD+'/.subfile');
-    mkdir(CWD+'/docs');
-    cp(tmpPath+'/templates/general_information.md', CWD+'/docs/general_information.md');
-    
-    if (options.travis) {
-      var tmp = 'language: node_js\nnode_js:\n  - 0.8\n  - 0.10';
-      tmp.to('.travis.yml');
-    };
-
-    program.log.info('A `.subfile` has been placed in this directory. You are now');
-    program.log.info('ready to start writing your README.md file content. Please read');
-    program.log.info('the comments in the `.subfile` as well as documentation on');
-    program.log.info('the project page for more information on using subtool.');
-  })
-
-/**
- * The readme command
- */
-program
-  .command('readme')
-  .description(descColor('generate the readme file'))
-  .option('-d, --display', 'Print the generated reamde content to console')
-  .option('-g, --git-commit', 'auto commit the README.md file.')
-  .action(function(options) {
-    // Load the .subfile at first.
-    subfile.load(CWD, function(configData) {
-      if (configData === false) {
-        program.log.info('No .subfile file was found. please create one.');
-        process.exit(1);
-      }
-      else {
-        readme.generate(configData, function(data) {
-          if (options.display) {
-            program.log.info(data);
-          }
-          else {
-            fs.writeFile('README.md', data, function (err) {
-              if (err) throw err;
-              program.log.info('Readme file saved!');
-
-              if (options.gitCommit) {
-                exec('git add README.md');
-                exec('git commit -m "README.md updated and auto commited by subtool [ci skip]"');
-              };
-            });
-            //travis.saveYml(process.env.PWD, configData.travis, function(data) {});
-          };
-        });
-      }
-    });
-  })
-  .on('--help', function() {
-    program.commandExample([{description: 'generate the content and save the file',
-                                 command: 'subtool readme'},
-                                {description: 'generate the content and print to console',
-                                 command: 'subtool readme -d'},
-                                {description: 'generate the file and git commit the changes',
-                                 command: 'subtool readme -g'}]);
-  });
-
-/**
- * The license command
- */
-program
-  .command('license <type>')
-  .description(descColor('choose between the following license: apache, freebsd, isc, mit, newbsd'))
-  .option('-a, --author [name]', 'the author name we want to use')
-  .option('-d, --date [year]', 'the year')
-  .option('-s, --save', 'save the license file')
-  // TODO:
-  //.option('-s, --save', 'save the file')
-  .action(function(type, options) {
-    // If options doesn't exists, set some default values.
-    var author = options.author || 'subtub';
-    var date = options.date || (new Date()).getFullYear();
-    
-    // check if we want to save a LICENSE.txt file.
-    // Else we print out the license.
-    if (options.save) {
-      license.save(CWD, type, author, date, logSilent, function(data) {
-        program.log.info(license.FILENAME+' saved to current directory.');
-      });
-    }
-    else {
-      license.get(type, author, date, function(data) {
-        program.log.info(data);
-      });
-    };
-  })
-  .on('--help', function() {
-    program.commandExample([{description: 'generate a mit license and set an author name',
-                                 command: 'subtool license mit -a subtub'},
-                                {description: 'generate a mit license and set an author first-, last-name + date',
-                                 command: 'subtool license mit -a "karl koch" -y 2013'},
-                                {description: 'generate a mit license and set an author first-, last-name + date range',
-                                 command: 'subtool license mit -a "karl koch" -y "2010 - 2013"'}]);
-  });
-
-/**
- * The templates command
- */
-program
-  .command('tpl [type]')
-  .description(descColor('choose between the following template types: p5, node'))
-  .option('-a, --all', 'list all template types')
-  .option('-s, --sample [name]', 'the template sample we want to use')
-  .option('-l, --list', 'list the available templates of a type')
-  .action(function(type, options) {
-    var indexJson = require(path.dirname(__dirname)+'/templates/index.json');
-    
-    // List all available template types
-    if (options.all) {
-      program.log.info('list of available types:');
-      program.log.info('');
-      for (var i = 0; i < indexJson.content.length; i++) {
-        program.log.info('  - '+indexJson.content[i].command);
-        program.log.info('    '+indexJson.content[i].description);
-        program.log.info('');
-      };
-    }
-
-    if (type !== undefined) {
-      for (var i=0; i<indexJson.content.length; i++) {
-        // check if the type is a command from the index.json
-        if (type === indexJson.content[i].command) {
-          // Check the options
-          if (options.list) {
-            var list = fs.readdirSync(path.dirname(__dirname)+'/templates'+indexJson.content[i].folder)
-            program.log.info('choose between the following templates:\n');
-            for (var i=0; i<list.length; i++) {
-              program.log.info('  '+list[i]);
-            };
-            program.log.info('');
-          }
-          if (options.sample) {
-            var tmpPath = path.dirname(__dirname)+'/templates'+indexJson.content[i].folder+'/'+options.sample;
-            console.log(tmpPath);
-            var tmp = cat(tmpPath);
-            console.log(tmp);
-          };
-        };
-      };
-    };
-  })
-  .on('--help', function() {
-    program.commandExample([{description: 'get the processing class template',
-                                  command: 'subtool template p5 -a class'}]);
-  });
+  .command('init', 'save a .subfile to the current directory')
+  .command('readme', 'generate the readme file')
+  .command('license', 'choose between the following license: apache, freebsd, isc, mit, newbsd')
+  .command('template', 'choose between the following template types: p5, node');
 
 /**
  * Parse the process arguments

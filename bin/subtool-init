@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+var path = require('path');
+var shell = require('shelljs/global');
+var program = require('commander');
+var CommanderUtils = require('commander-utils');
+CommanderUtils(program);
+
+/**
+ * The options.
+ */
+program
+  .option('-t, --travis', 'add a .travis.yml file')
+  .parseUtils(process.argv);
+
+/**
+ * The current working directory of the terminal.
+ */
+var CWD = process.cwd();
+
+var tmpPath = path.dirname(__dirname);
+cp(tmpPath+'/templates/.subfile', CWD+'/.subfile');
+mkdir(CWD+'/docs');
+cp(tmpPath+'/templates/general_information.md', CWD+'/docs/general_information.md');
+
+if (program.travis) {
+  var tmp = 'language: node_js\nnode_js:\n  - 0.8\n  - 0.10';
+  tmp.to('.travis.yml');
+};
+
+program.log.info('A `.subfile` has been placed in this directory. You are now');
+program.log.info('ready to start writing your README.md file content. Please read');
+program.log.info('the comments in the `.subfile` as well as documentation on');
+program.log.info('the project page for more information on using subtool.');

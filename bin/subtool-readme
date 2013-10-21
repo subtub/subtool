@@ -1,0 +1,59 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+var fs = require('fs');
+var shell = require('shelljs/global');
+var subfile = require('./../src/subfile');
+var readme = require('./../src/readme');
+var program = require('commander');
+var CommanderUtils = require('commander-utils');
+CommanderUtils(program);
+
+/**
+ * The options.
+ */
+program
+  .option('-d, --display', 'Print the generated reamde content to console')
+  .option('-g, --git-commit', 'auto commit the README.md file.')
+  
+// TODO------------------------------------------------------
+// program.on('--help', function() {
+//   program.commandExample([{description: 'generate the content and save the file',
+//                            command: 'subtool readme'},
+//                           {description: 'generate the content and print to console',
+//                            command: 'subtool readme -d'},
+//                           {description: 'generate the file and git commit the changes',
+//                            command: 'subtool readme -g'}]);
+// });
+
+program.parseUtils(process.argv);
+
+
+// Load the .subfile at first.
+subfile.load(process.cwd(), function(configData) {
+  if (configData === false) {
+    program.log.info('No .subfile file was found. please create one.');
+    process.exit(1);
+  }
+  else {
+    readme.generate(configData, function(data) {
+      if (program.display) {
+        program.log.info(data);
+      }
+      else {
+        fs.writeFile('README.md', data, function (err) {
+          if (err) throw err;
+          program.log.info('Readme file saved!');
+
+          if (program.gitCommit) {
+            exec('git add README.md');
+            exec('git commit -m "README.md updated and auto commited by subtool [ci skip]"');
+          };
+        });
+        //travis.saveYml(process.env.PWD, configData.travis, function(data) {});
+      }
+    });
+  }
+});
