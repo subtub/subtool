@@ -1,38 +1,27 @@
 var assert = require('assert');
-var shell = require('shelljs/global');
+var testExec = require('./helper');
 
 
 describe('bin/subtool', function() {
-  testExec('');
+  testExec('subtool');
 
-  testExec('-h');
-  testExec('-V');
+  testExec('subtool -h');
+  testExec('subtool -V');
 
-  testExec('license -h');
-  testExec('license apache');
-  testExec('license freebsd');
-  testExec('license isc');
-  testExec('license mit');
-  testExec('license newbsd');
-  testExec('license mit -a subtub');
-  testExec('license mit -d "2012 - 2013"');
+  testExec('subtool license -h');
+  testExec('subtool license apache');
+  testExec('subtool license freebsd');
+  testExec('subtool license isc');
+  testExec('subtool license mit');
+  testExec('subtool license newbsd');
+  testExec('subtool license mit -a subtub');
+  testExec('subtool license mit -d "2012 - 2013"');
 
-  testExec('readme -h');
-  testExec('readme');
-  testExec('readme -d');
+  testExec('subtool readme -h');
+  testExec('subtool readme');
+  testExec('subtool readme -d');
 
-  testExec('tpl -h');
-  testExec('tpl p5 -l');
-  testExec('tpl p5 -s sketch');
+  testExec('subtool tpl -h');
+  testExec('subtool tpl p5 -l');
+  testExec('subtool tpl p5 -s sketch');
 });
-
-/**
- * Small execution test helper.
- * Check if the exec code equals 0.
- */
-function testExec(cmd) {
-  it('execute bin/subtool '+cmd, function() {
-    var tmpCode = exec('node bin/subtool '+cmd, {silent:true}).code;
-    assert.equal( 0, tmpCode);
-  });
-}
