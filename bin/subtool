@@ -219,6 +219,4 @@ program
 /**
  * Parse the process arguments
  */
-program
-  .parseUtils()
-  .parse(process.argv);
+program.parseUtils(process.argv);
