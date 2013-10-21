@@ -5,6 +5,6 @@
 /node_modules
 
 # Test/Report Files
-/testing
-test/LICENSE.txt
+test/files/.travis.yml
+test/files/LICENSE.txt
 report/

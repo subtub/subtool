@@ -43,7 +43,7 @@ describe('src/travis-ci.js', function() {
 
   describe('#saveYml()', function() {
     it('should return true, if the file was saved', function() {
-      travis.saveYml(process.env.PWD+'/testing', config, function(data) {
+      travis.saveYml(process.env.PWD+'/test/files', config, function(data) {
         assert.equal( true, data );
       });
     });
