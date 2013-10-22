@@ -6,9 +6,10 @@ var shell = require('shelljs/global');
  * Check if the exec code equals 0.
  */
 function testExec(cmd) {
-  it('execute bin/'+cmd, function() {
+  it('execute bin/'+cmd, function(done) {
     var tmpCode = exec('node bin/'+cmd, {silent:true}).code;
     assert.equal( 0, tmpCode);
+    done();
   });
 }
 
