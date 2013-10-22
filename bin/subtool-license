@@ -28,8 +28,7 @@ program
   //.option('-s, --save', 'save the file')
   .parseUtils(process.argv);
 
-// Get the type
-var type = process.argv[process.argv.length-1];
+var type = program.getLastArg();
 
 // If options doesn't exists, set some default values.
 var author = program.author || 'subtub';
