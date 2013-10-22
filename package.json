@@ -11,7 +11,11 @@
     "npm": "1.2.x"
   },
   "bin": {
-    "subtool": "./bin/subtool"
+    "subtool": "./bin/subtool",
+    "subtool-init": "./bin/subtool-init",
+    "subtool-license": "./bin/subtool-license",
+    "subtool-readme": "./bin/subtool-readme",
+    "subtool-template": "./bin/subtool-template"
   },
   "scripts": {
     "test": "make test"
