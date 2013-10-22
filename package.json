@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "commander": "2.0.0",
-    "commander-utils": "https://github.com/subtub/commander-utils/archive/v0.1.2.tar.gz",
+    "commander-utils": "https://github.com/subtub/commander-utils/archive/v0.1.3.tar.gz",
     "shelljs": "0.2.4",
     "execSync": "1.0.1-pre",
     "request": "2.27.0",
