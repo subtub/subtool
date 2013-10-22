@@ -8,27 +8,25 @@ var program = require('commander');
 var CommanderUtils = require('commander-utils');
 CommanderUtils(program);
 
+program.addExamples([
+  { description: 'generate a mit license and set an author name',
+    command:     'subtool license mit -a subtub' },
+  { description: 'generate a mit license and set an author first-, last-name + date',
+    command:     'subtool license mit -a "karl koch" -y 2013' },
+  { description: 'generate a mit license and set an author first-, last-name + date range',
+    command:     'subtool license mit -a "karl koch" -y "2010 - 2013"' }
+]);
+
 /**
  * The options.
  */
 program
   .option('-a, --author [name]', 'the author name we want to use')
   .option('-d, --date [year]', 'the year')
-  .option('-s, --save', 'save the license file');
+  .option('-s, --save', 'save the license file')
   // TODO:
   //.option('-s, --save', 'save the file')
-
-// TODO
-// .on('--help', function() {
-//     program.commandExample([{description: 'generate a mit license and set an author name',
-//                                  command: 'subtool license mit -a subtub'},
-//                                 {description: 'generate a mit license and set an author first-, last-name + date',
-//                                  command: 'subtool license mit -a "karl koch" -y 2013'},
-//                                 {description: 'generate a mit license and set an author first-, last-name + date range',
-//                                  command: 'subtool license mit -a "karl koch" -y "2010 - 2013"'}]);
-//   });
-
-program.parseUtils(process.argv);
+  .parseUtils(process.argv);
 
 // If options doesn't exists, set some default values.
 var author = program.author || 'subtub';

@@ -10,6 +10,11 @@ var program = require('commander');
 var CommanderUtils = require('commander-utils');
 CommanderUtils(program);
 
+program.addExamples([
+  { description: 'get the processing class template',
+    command:     'subtool template p5 -a class' }
+]);
+
 /**
  * The options.
  */
@@ -17,14 +22,7 @@ program
   .option('-a, --all', 'list all template types')
   .option('-s, --sample [name]', 'the template sample we want to use')
   .option('-l, --list', 'list the available templates of a type')
-
-// TODO
-// .on('--help', function() {
-//     program.commandExample([{description: 'get the processing class template',
-//                                   command: 'subtool template p5 -a class'}]);
-//   });
-
-.parseUtils(process.argv);
+  .parseUtils(process.argv);
 
 
 var indexJson = require(path.dirname(__dirname)+'/templates/index.json');
