@@ -1,0 +1,46 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+var license = require('./../src/license');
+var program = require('commander');
+var CommanderUtils = require('commander-utils');
+CommanderUtils(program);
+
+program.addExamples([
+  { description: 'generate a mit license and set an author name',
+    command:     'subtool license mit -a subtub' },
+  { description: 'generate a mit license and set an author first-, last-name + date',
+    command:     'subtool license mit -a "karl koch" -y 2013' },
+  { description: 'generate a mit license and set an author first-, last-name + date range',
+    command:     'subtool license mit -a "karl koch" -y "2010 - 2013"' }
+]);
+
+/**
+ * The options.
+ */
+program
+  .option('-a, --author [name]', 'the author name we want to use')
+  .option('-d, --date [year]', 'the year')
+  .option('-s, --save', 'save the license file')
+  // TODO:
+  //.option('-s, --save', 'save the file')
+  .parseUtils(process.argv);
+
+// If options doesn't exists, set some default values.
+var author = program.author || 'subtub';
+var date = program.date || (new Date()).getFullYear();
+
+// check if we want to save a LICENSE.txt file.
+// Else we print out the license.
+if (program.save) {
+  license.save(CWD, type, author, date, logSilent, function(data) {
+    program.log.info(license.FILENAME+' saved to current directory.');
+  });
+}
+else {
+  license.get(type, author, date, function(data) {
+    program.log.info(data);
+  });
+};

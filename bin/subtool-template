@@ -1,0 +1,64 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+var fs = require('fs');
+var path = require('path');
+var shell = require('shelljs/global');
+var program = require('commander');
+var CommanderUtils = require('commander-utils');
+CommanderUtils(program);
+
+program.addExamples([
+  { description: 'get the processing class template',
+    command:     'subtool template p5 -a class' }
+]);
+
+/**
+ * The options.
+ */
+program
+  .option('-a, --all', 'list all template types')
+  .option('-s, --sample [name]', 'the template sample we want to use')
+  .option('-l, --list', 'list the available templates of a type')
+  .parseUtils(process.argv);
+
+
+var indexJson = require(path.dirname(__dirname)+'/templates/index.json');
+
+// List all available template types
+if (program.all) {
+  program.log.info('list of available types:');
+  program.log.info('');
+  for (var i = 0; i < indexJson.content.length; i++) {
+    program.log.info('  - '+indexJson.content[i].command);
+    program.log.info('    '+indexJson.content[i].description);
+    program.log.info('');
+  };
+}
+
+if (type !== undefined) {
+  for (var i=0; i<indexJson.content.length; i++) {
+    // check if the type is a command from the index.json
+    if (type === indexJson.content[i].command) {
+      // Check the options
+      if (program.list) {
+        var list = fs.readdirSync(path.dirname(__dirname)+'/templates'+indexJson.content[i].folder)
+        program.log.info('choose between the following templates:\n');
+        for (var i=0; i<list.length; i++) {
+          program.log.info('  '+list[i]);
+        };
+        program.log.info('');
+      }
+      if (program.sample) {
+        var tmpPath = path.dirname(__dirname)+'/templates'+indexJson.content[i].folder+'/'+program.sample;
+        console.log(tmpPath);
+        var tmp = cat(tmpPath);
+        console.log(tmp);
+      };
+    };
+  };
+};
+
+  

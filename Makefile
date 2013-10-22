@@ -1,30 +1,10 @@
 ###
-# Test Task
+# subtool Makefile
 ###
 
-test:
-	@rm -rf testing
-	@mkdir testing
-	@node node_modules/.bin/mocha --reporter spec
+COMMON_MAKEFILES_PATH=node_modules/CommonMakefiles
+include $(COMMON_MAKEFILES_PATH)/index.make
+include $(COMMON_MAKEFILES_PATH)/node/all.make
 
-.PHONY: test
-
-
-###
-# Hint Task
-###
-
-hint:
-	@node node_modules/.bin/jshint src/ test/ bin/
-
-.PHONY: hint
-
-###
-# Report Task
-###
-
-report:
-	@node node_modules/.bin/plato -t "subtool" -r --dir report src/
-
-.PHONY: report
-
+HINT_DIR = src/ test/ bin/
+PLATO_FILES = src/
