@@ -3,7 +3,8 @@ var testExec = require('./helper');
 
 
 describe('bin/subtool-template', function() {
-  testExec('subtool template -h');
-  testExec('subtool template p5 -l');
-  testExec('subtool template p5 -s sketch');
+  testExec('subtool-template -h');
+  testExec('subtool-template -a');
+  testExec('subtool-template p5 -l');
+  testExec('subtool-template p5 -s sketch');
 });
