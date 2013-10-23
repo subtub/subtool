@@ -26,8 +26,7 @@
     "RecursiveContentInclude": "https://github.com/WrongEntertainment/RecursiveContentInclude/archive/v0.2.0.tar.gz",
     "shelljs": "0.2.4",
     "execSync": "1.0.1-pre",
-    "request": "2.27.0",
-    "cli-color": "0.2.3"
+    "request": "2.27.0"
   },
   "devDependencies": {
     "CommonMakefiles": "https://github.com/subtub/CommonMakefiles/archive/v0.0.1.tar.gz",
