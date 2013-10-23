@@ -10,14 +10,16 @@ var program = require('commander');
 var CommanderUtils = require('commander-utils');
 CommanderUtils(program);
 
-program.addExamples([
-  { description: 'generate the content and save the file',
-    command:     'subtool readme' },
-  { description: 'generate the content and print to console',
-    command:     'subtool readme -d' },
-  { description: 'generate the file and git commit the changes',
-    command:     'subtool readme -g' }
-]);
+program
+  .noMainHelp()
+  .addExamples([
+    { description: 'generate the content and save the file',
+      command:     'subtool readme' },
+    { description: 'generate the content and print to console',
+      command:     'subtool readme -d' },
+    { description: 'generate the file and git commit the changes',
+      command:     'subtool readme -g' }
+  ]);
 
 /**
  * The options.

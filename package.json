@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "commander": "2.0.0",
-    "commander-utils": "https://github.com/subtub/commander-utils/archive/v0.1.4.tar.gz",
+    "commander-utils": "https://github.com/subtub/commander-utils/archive/v0.1.5b.tar.gz",
     "RecursiveContentInclude": "https://github.com/WrongEntertainment/RecursiveContentInclude/archive/v0.2.0.tar.gz",
     "shelljs": "0.2.4",
     "execSync": "1.0.1-pre",
