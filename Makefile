@@ -2,9 +2,11 @@
 # subtool Makefile
 ###
 
-COMMON_MAKEFILES_PATH=node_modules/CommonMakefiles
-include $(COMMON_MAKEFILES_PATH)/index.make
-include $(COMMON_MAKEFILES_PATH)/node/all.make
+include node_modules/common-makefiles/node.make
 
 HINT_DIR = src/ test/ bin/
 PLATO_FILES = src/
+
+test: mocha
+
+.PHONY: test

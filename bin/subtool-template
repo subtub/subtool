@@ -5,7 +5,6 @@
  */
 var fs = require('fs');
 var path = require('path');
-var shell = require('shelljs/global');
 var program = require('commander');
 var CommanderUtils = require('commander-utils');
 CommanderUtils(program);
@@ -20,6 +19,7 @@ program.addExamples([
  */
 program
   .option('-a, --all', 'list all template types')
+  .option('-t, --type <lang>', 'set a template type')
   .option('-s, --sample [name]', 'the template sample we want to use')
   .option('-l, --list', 'list the available templates of a type')
   .parseUtils(process.argv);
@@ -38,10 +38,16 @@ if (program.all) {
   };
 }
 
-if (type !== undefined) {
+if (program.type !== undefined) {
+
+  var typeValid = false;
+  var sampleContent = null;
+
   for (var i=0; i<indexJson.content.length; i++) {
     // check if the type is a command from the index.json
-    if (type === indexJson.content[i].command) {
+    if (program.type === indexJson.content[i].command) {
+      typeValid = true;
+
       // Check the options
       if (program.list) {
         var list = fs.readdirSync(path.dirname(__dirname)+'/templates'+indexJson.content[i].folder)
@@ -53,12 +59,28 @@ if (type !== undefined) {
       }
       if (program.sample) {
         var tmpPath = path.dirname(__dirname)+'/templates'+indexJson.content[i].folder+'/'+program.sample;
-        console.log(tmpPath);
-        var tmp = cat(tmpPath);
-        console.log(tmp);
-      };
-    };
+        
+        if (fs.existsSync(tmpPath)) {
+          var data = fs.readFileSync(tmpPath, 'utf8');
+          sampleContent = data;
+        }
+        else {
+          program.log.error('not correct sample!');
+        }
+        
+      }
+    }
+  }
+
+  // Print to console...
+  if (program.sample && sampleContent !== null) {
+    console.log(sampleContent);
   };
-};
+
+  if (typeValid === false) {
+    program.log.error('not correct type.')
+  };
+
+}
 
   

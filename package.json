@@ -1,6 +1,6 @@
 {
   "name": "subtool",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "internal subtub tool",
   "repository": {
     "type": "git",
@@ -22,14 +22,14 @@
   },
   "dependencies": {
     "commander": "2.0.0",
-    "commander-utils": "https://github.com/subtub/commander-utils/archive/v0.1.3.tar.gz",
+    "commander-utils": "https://github.com/subtub/commander-utils/archive/v0.1.7.tar.gz",
+    "resi": "0.4.1",
     "shelljs": "0.2.4",
     "execSync": "1.0.1-pre",
-    "request": "2.27.0",
-    "cli-color": "0.2.3"
+    "request": "2.27.0"
   },
   "devDependencies": {
-    "CommonMakefiles": "https://github.com/subtub/CommonMakefiles/archive/v0.0.1.tar.gz",
+    "common-makefiles": "0.2.0",
     "mocha": "1.12.1",
     "jshint": "2.1.11",
     "plato": "0.6.2"

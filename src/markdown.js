@@ -1,10 +1,4 @@
 /**
- * Module dependencies.
- */
-var fs = require('fs');
-
-
-/**
  * The main object.
  * Some Markdown functions to generate links, lists etc. strings.
  */
@@ -83,49 +77,6 @@ module.exports = markdown = {
       tmp += '- ['+arr[i].title+']('+arr[i].url+')'+this.LINEBREAK;
     }
     return tmp;
-  },
-
-  read: function(path, callback) {
-    fs.readFile(path, function(err, data) {
-      if (err) {
-        return callback(err);
-      } else {
-        var content = data.toString();
-        var tmp = include(content);
-        return callback(tmp);
-      }
-    });
-  },
-
-  readSync: function(path) {
-    var content = fs.readFileSync(path, 'utf-8');
-    var tmp = include(content);
-    return tmp;
   }
 
 };
-
-var INCLUDE_START = '{{include:';
-var INCLUDE_STOP = '}}';
-
-function include(text) {
-  var parseInclude = text.split(INCLUDE_START);
-  // If an include string was found.
-  if (parseInclude.length > 1) {
-    var tmpText = parseInclude[0];
-    for (var i=1; i<parseInclude.length; i++) {
-      var tmpPath = parseInclude[i].split(INCLUDE_STOP);
-      // Read the file. The first array object is the path.
-      var tmpFile = markdown.readSync(process.env.PWD+tmpPath[0]);
-      tmpText += tmpFile;
-      if (tmpPath.length > 0) {
-        tmpText += tmpPath[1];
-      }
-    }
-    return tmpText;
-  }
-  // If no include was found...
-  else {
-    return text;
-  }
-}

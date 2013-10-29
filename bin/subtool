@@ -39,9 +39,9 @@ program
  */
 program
   .command('init', 'save a .subfile to the current directory')
-  .command('readme', 'generate the readme file')
-  .command('license', 'choose between the following license: apache, freebsd, isc, mit, newbsd')
-  .command('template', 'choose between the following template types: p5, node');
+  .command('readme', 'generate a readme file')
+  .command('license <type>', 'choose between the following license: apache, freebsd, isc, mit, newbsd')
+  .command('template', 'the template command');
 
 /**
  * Parse the process arguments
