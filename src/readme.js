@@ -8,7 +8,7 @@
  * Module dependencies.
  */
 var shell = require('shelljs/global');
-var rci = require('RecursiveContentInclude');
+var resi = require('resi');
 var license = require('./license');
 var md = require('./markdown');
 var travis = require('./travis-ci');
@@ -85,13 +85,13 @@ function generate(config, callback) {
         var tmpPwd = process.env.PWD;
         // If the files variable is a single string
         if (typeof config.readme.content[i].file === 'string') {
-          tmp += rci.readFileSync(tmpPwd+config.readme.content[i].file);
+          tmp += resi.readFileSync(tmpPwd+config.readme.content[i].file);
           tmp += backToTOC();
         }
         // If the files variable is an array
         if (config.readme.content[i].file instanceof Array) {
           for (var j=0; j<config.readme.content[i].file.length; j++) {
-            tmp += rci.readFileSync(tmpPwd+config.readme.content[i].file[j]);
+            tmp += resi.readFileSync(tmpPwd+config.readme.content[i].file[j]);
             tmp += backToTOC();
           }
         }
